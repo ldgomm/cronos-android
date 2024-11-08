@@ -1,5 +1,7 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.state
 
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Information
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Offer
@@ -8,8 +10,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.P
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.ProductStatus
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
 import java.util.UUID
 
 data class AddEditProductState(
@@ -37,20 +37,6 @@ data class AddEditProductState(
     val warranty: Warranty? = null,
     val legal: String? = null,
     val warning: String? = null,
-    val status: ProductStatus = ProductStatus(
-        isBlackFriday = true,
-        isChristmas = false,
-        isValentinesDay = false,
-        isMothersDay = false,
-        isFathersDay = false,
-        isLaborDay = false,
-        isCyberMonday = false,
-        isNewYearsDay = false,
-        isEaster = false,
-        isHalloween = false,
-        isThanksgiving = false,
-        isIndependenceDay = false
-    ),
     val storeId: String? = null
 ) {
 
@@ -79,7 +65,6 @@ data class AddEditProductState(
                 specifications = specifications,
                 warranty = warranty,
                 legal = legal,
-                status = status,
                 warning = warning
             )
         } catch (e: Exception) {

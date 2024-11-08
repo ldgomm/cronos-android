@@ -9,18 +9,23 @@ import kotlinx.serialization.Serializable
 
 interface ProductServiceable {
 
-    fun getProducts(endpoint: String): Flow<Result<List<ProductDto>>>
+    fun getProducts(
+        endpoint: String,
+        apiKey: String
+    ): Flow<Result<List<ProductDto>>>
 
     fun getCategories(endpoint: String): Flow<Result<Categories>>
 
     fun addProduct(
         url: String,
-        request: PostProductRequest
+        request: PostProductRequest,
+        apiKey: String
     ): Flow<Result<MessageResponse>>
 
     fun updateProduct(
         url: String,
-        request: PutProductRequest
+        request: PutProductRequest,
+        apiKey: String
     ): Flow<Result<MessageResponse>>
 }
 

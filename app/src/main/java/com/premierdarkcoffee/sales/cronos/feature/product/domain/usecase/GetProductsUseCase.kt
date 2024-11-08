@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetProductsUseCase @Inject constructor(private val productServiceable: ProductServiceable) {
 
-    operator fun invoke(url: String): Flow<Result<List<ProductDto>>> {
-        return productServiceable.getProducts(url)
+    operator fun invoke(url: String, apiKey: String): Flow<Result<List<ProductDto>>> {
+        return productServiceable.getProducts(url,apiKey)
     }
 }

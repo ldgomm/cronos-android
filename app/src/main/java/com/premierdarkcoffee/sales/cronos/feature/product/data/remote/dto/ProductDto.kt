@@ -1,6 +1,7 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto
 
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.ProductStatus
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,7 +25,6 @@ data class ProductDto(
     val warranty: WarrantyDto? = null,
     val legal: String? = null,
     val warning: String? = null,
-    val status: ProductStatusDto? = null,
     val storeId: String? = null
 ) {
 
@@ -49,7 +49,6 @@ data class ProductDto(
             warranty = warranty?.toWarranty(),
             legal = legal,
             warning = warning,
-            status = status?.toProductStatus(),
             storeId = storeId
         )
     }

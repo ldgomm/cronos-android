@@ -10,6 +10,9 @@ package com.premierdarkcoffee.sales.cronos.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
+data object AuthenticationRoute
+
+@Serializable
 data object ProductsRoute
 
 @Serializable

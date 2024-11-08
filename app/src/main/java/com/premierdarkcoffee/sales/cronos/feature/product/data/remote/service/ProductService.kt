@@ -3,19 +3,21 @@ package com.premierdarkcoffee.sales.cronos.feature.product.data.remote.service
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
-import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
-import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.MessageResponse
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.ProductServiceable
+import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
+import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import com.premierdarkcoffee.sales.sales.util.constant.Categories
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode.Companion.Accepted
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Created
@@ -32,10 +34,15 @@ import javax.inject.Inject
 
 class ProductService @Inject constructor(private val httpClient: HttpClient) : ProductServiceable {
 
-    override fun getProducts(endpoint: String): Flow<Result<List<ProductDto>>> {
+    override fun getProducts(
+        endpoint: String,
+        apiKey: String
+    ): Flow<Result<List<ProductDto>>> {
         return flow {
             try {
-                val response: HttpResponse = httpClient.get(endpoint)
+                val response: HttpResponse = httpClient.get(endpoint) {
+                    header(HttpHeaders.Authorization, "Bearer $apiKey")
+                }
 //                Log.d(TAG, "ProductService | We have products: ${response.body<List<ProductDto>>()}")
                 emit(Result.success(response.body()))
             } catch (e: Exception) {
@@ -60,11 +67,15 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
 
     override fun addProduct(
         url: String,
-        request: PostProductRequest
+        request: PostProductRequest,
+        apiKey: String
     ): Flow<Result<MessageResponse>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.post(url) {
+
+                    header(HttpHeaders.Authorization, "Bearer $apiKey")
+
                     contentType(ContentType.Application.Json)
                     setBody(request)
                 }
@@ -100,11 +111,15 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
 
     override fun updateProduct(
         url: String,
-        request: PutProductRequest
+        request: PutProductRequest,
+        apiKey: String
     ): Flow<Result<MessageResponse>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.put(url) {
+
+                    header(HttpHeaders.Authorization, "Bearer $apiKey")
+
                     contentType(ContentType.Application.Json)
                     setBody(request)
                 }

@@ -1,19 +1,30 @@
 package com.premierdarkcoffee.sales.cronos.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.premierdarkcoffee.sales.cronos.navigation.route.settings.accountDeletionRoute
 import com.premierdarkcoffee.sales.cronos.navigation.route.settings.privacyPolicyView
 import com.premierdarkcoffee.sales.cronos.navigation.route.settings.settingsRoute
 import com.premierdarkcoffee.sales.cronos.navigation.route.settings.termsOfUseRoute
+import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
     startDestination: Any
 ) {
+
+    val context = LocalContext.current
+
     NavHost(navController = navController, startDestination = startDestination) {
+
+        authenticationRoute { apiKey: String ->
+            SecurePreferencesHelper.setApiKey(context, apiKey)
+            navController.popBackStack()
+            navController.navigate(ProductsRoute)
+        }
 
         productsRoute(navController, onNavigateToProductView = { productJson: String ->
             navController.navigate(ProductRoute(productJson))

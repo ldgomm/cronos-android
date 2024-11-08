@@ -3,6 +3,10 @@ package com.premierdarkcoffee.sales.cronos.navigation
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -12,6 +16,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.Produc
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.AddEditProductView
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.viewmodel.ProductViewModel
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
+import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
 fun NavGraphBuilder.addEditProductRoute(
     navController: NavHostController,
@@ -32,6 +37,15 @@ fun NavGraphBuilder.addEditProductRoute(
         LaunchedEffect(product) {
             product?.let {
                 viewModel.setProduct(product.toProduct())
+            }
+        }
+
+        val context = LocalContext.current
+        var token: String by remember { mutableStateOf("") }
+        LaunchedEffect(Unit) {
+            SecurePreferencesHelper.getApiKey(context)?.let {
+                token = it
+                viewModel.initData(it)
             }
         }
 
@@ -61,11 +75,16 @@ fun NavGraphBuilder.addEditProductRoute(
                            addProduct = { product ->
                                viewModel.addProduct(
                                    product = product,
+                                   token,
                                    onSuccess = onBackToProductsActionTriggered,
                                    onFailure = {})
                            },
                            updateProduct = { product ->
-                               viewModel.updateProduct(product, onSuccess = onBackToProductsActionTriggered, onFailure = {})
+                               viewModel.updateProduct(
+                                   product,
+                                   token,
+                                   onSuccess = onBackToProductsActionTriggered,
+                                   onFailure = {})
                            })
     }
 }

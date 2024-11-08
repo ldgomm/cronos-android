@@ -1,6 +1,7 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product
 
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
+import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductStatusDto
 
 data class Product(
     val id: String,
@@ -22,7 +23,6 @@ data class Product(
     val warranty: Warranty? = null,
     val legal: String? = null,
     val warning: String? = null,
-    val status: ProductStatus? = null,
     val storeId: String? = null
 ) {
 
@@ -47,7 +47,6 @@ data class Product(
             warranty = warranty?.toWarrantyDto(),
             legal = legal,
             warning = warning,
-            status = status?.toProductStatus(),
             storeId = storeId
         )
     }

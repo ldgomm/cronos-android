@@ -10,8 +10,8 @@ class AddProductUseCase @Inject constructor(private val productServiceable: Prod
 
     operator fun invoke(
         url: String,
-        request: PostProductRequest
+        request: PostProductRequest, apiKey: String
     ): Flow<Result<MessageResponse>> {
-        return productServiceable.addProduct(url, request)
+        return productServiceable.addProduct(url, request, apiKey)
     }
 }

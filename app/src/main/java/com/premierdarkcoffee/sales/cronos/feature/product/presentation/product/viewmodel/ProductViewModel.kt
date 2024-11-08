@@ -4,12 +4,11 @@ import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.ProductStatus
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Group
@@ -22,7 +21,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetGrou
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetProductsUseCase
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.UpdateProductUseCase
 import com.premierdarkcoffee.sales.cronos.util.function.getUrlFor
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.util.key.getCronosKey
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
@@ -69,9 +67,9 @@ class ProductViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
-    init {
-        getProducts()
-        observeSearchTextChanges()
+    fun initData(apiKey: String) {
+        getProducts(apiKey)
+        observeSearchTextChanges(apiKey)
         getGroups()
     }
 
@@ -98,9 +96,9 @@ class ProductViewModel @Inject constructor(
      *
      * @param storeId The ID of the store associated with the search.
      */
-    private fun observeSearchTextChanges() {
+    private fun observeSearchTextChanges(apiKey: String) {
         viewModelScope.launch {
-            _searchText.collect { searchStoreProduct(it) }
+            _searchText.collect { searchStoreProduct(text = it, apiKey) }
         }
     }
 
@@ -110,10 +108,13 @@ class ProductViewModel @Inject constructor(
      * @param storeId The ID of the store to search within.
      * @param text The search text input.
      */
-    private fun searchStoreProduct(text: String) {
+    private fun searchStoreProduct(
+        text: String,
+        apiKey: String
+    ) {
         if (text.isEmpty()) {
             // When the search text is empty, display the original product list
-            getProducts()
+            getProducts(apiKey)
         } else {
             // Perform the local search using regex
             filterProductsLocally(text)
@@ -142,15 +143,15 @@ class ProductViewModel @Inject constructor(
      *
      * @param storeId The ID of the store to fetch products from, or null to fetch all products.
      */
-    private fun getProducts() {
-        executeProductSearch()
+    private fun getProducts(apiKey: String) {
+        executeProductSearch(apiKey = apiKey)
     }
 
-    fun onRefresh() {
+    fun onRefresh(apiKey: String) {
         _productsState.update { state ->
             state.copy(products = emptyList())
         }
-        executeProductSearch()
+        executeProductSearch(apiKey = apiKey)
     }
 
     /**
@@ -159,11 +160,14 @@ class ProductViewModel @Inject constructor(
      * @param storeId The ID of the store to fetch products from, or null for all stores.
      * @param text The search text input, or null to fetch all products.
      */
-    private fun executeProductSearch(text: String? = null) {
-        val url = getUrlFor(endpoint = "brandoun-products", keywords = text)
+    private fun executeProductSearch(
+        text: String? = null,
+        apiKey: String
+    ) {
+        val url = getUrlFor(endpoint = "cronos-brandoun-products", keywords = text)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                getProductsUseCase(url).collect { result ->
+                getProductsUseCase(url, apiKey).collect { result ->
                     result.onSuccess { products ->
                         _productsState.update { state ->
                             state.copy(products = products.map { it.toProduct() }.sortedByDescending { it.date })
@@ -190,9 +194,9 @@ class ProductViewModel @Inject constructor(
     /**
      * Clears the current search text.
      */
-    fun clearSearchText() {
+    fun clearSearchText(apiKey: String) {
         _searchText.value = ""
-        getProducts() // Restore the original product list
+        getProducts(apiKey) // Restore the original product list
     }
 
     /**
@@ -221,7 +225,6 @@ class ProductViewModel @Inject constructor(
             setWarranty(product.warranty)
             setLegal(product.legal)
             setWarning(product.warning)
-            product.status?.let { setStatus(it) }
 
             product.overview.forEach { result ->
                 result.image.path?.let { path ->
@@ -259,13 +262,16 @@ class ProductViewModel @Inject constructor(
      */
     fun addProduct(
         product: Product,
+        apiKey: String,
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 addEditedProductUseCase(
-                    getUrlFor(endpoint = "products"), PostProductRequest(key = cronosKey, product = product.toProductDto())
+                    getUrlFor(endpoint = "cronos-products"),
+                    PostProductRequest(key = cronosKey, product = product.toProductDto()),
+                    apiKey
                 ).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
@@ -294,13 +300,16 @@ class ProductViewModel @Inject constructor(
      */
     fun updateProduct(
         product: Product,
+        apiKey: String,
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 updateProductUseCase(
-                    getUrlFor(endpoint = "products"), PutProductRequest(key = cronosKey, product = product.toProductDto())
+                    getUrlFor(endpoint = "cronos-products"),
+                    PutProductRequest(key = cronosKey, product = product.toProductDto()),
+                    apiKey
                 ).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
@@ -485,12 +494,4 @@ class ProductViewModel @Inject constructor(
         _addEditProductState.value = _addEditProductState.value.copy(warning = warning)
     }
 
-    /**
-     * Sets the product warning information in the add/edit product state.
-     *
-     * @param warning The product warning information, if any.
-     */
-    fun setStatus(status: ProductStatus) {
-        _addEditProductState.value = _addEditProductState.value.copy(status = status)
-    }
 }

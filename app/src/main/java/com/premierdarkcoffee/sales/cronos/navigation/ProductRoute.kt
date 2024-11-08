@@ -1,5 +1,11 @@
 package com.premierdarkcoffee.sales.cronos.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -9,6 +15,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.Produc
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.ProductView
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.viewmodel.ProductViewModel
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
+import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
 fun NavGraphBuilder.productRoute(
     navController: NavHostController,
@@ -19,6 +26,16 @@ fun NavGraphBuilder.productRoute(
         val viewModel = backStackEntry.sharedViewModel<ProductViewModel>(navController = navController)
         val args = backStackEntry.toRoute<ProductRoute>()
         val product = Gson().fromJson(args.product, ProductDto::class.java).toProduct()
+
+
+        val context = LocalContext.current
+        var token: String by remember { mutableStateOf("") }
+        LaunchedEffect(Unit) {
+            SecurePreferencesHelper.getApiKey(context)?.let {
+                token = it
+                viewModel.initData(it)
+            }
+        }
 
         ProductView(
             product = product,
