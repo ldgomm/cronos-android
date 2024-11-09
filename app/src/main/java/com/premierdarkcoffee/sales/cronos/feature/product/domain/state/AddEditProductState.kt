@@ -7,7 +7,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.I
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Offer
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.ProductStatus
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
 import java.util.UUID
@@ -59,7 +58,7 @@ data class AddEditProductState(
                 stock = stock,
                 image = image,
                 origin = origin,
-                date = date,
+                date = System.currentTimeMillis(),
                 overview = overview,
                 keywords = keywords,
                 specifications = specifications,

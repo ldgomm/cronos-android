@@ -43,7 +43,6 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
                 val response: HttpResponse = httpClient.get(endpoint) {
                     header(HttpHeaders.Authorization, "Bearer $apiKey")
                 }
-//                Log.d(TAG, "ProductService | We have products: ${response.body<List<ProductDto>>()}")
                 emit(Result.success(response.body()))
             } catch (e: Exception) {
                 Log.d(TAG, "ProductService | We have no products: ${e.message}")
@@ -56,7 +55,6 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
         return flow {
             try {
                 val response: HttpResponse = httpClient.get(endpoint)
-//                Log.d(TAG, "ProductService | We have products: ${response.body<Categories>()}")
                 emit(Result.success(response.body()))
             } catch (e: Exception) {
                 Log.d(TAG, "ProductService | We have no products: ${e.message}")

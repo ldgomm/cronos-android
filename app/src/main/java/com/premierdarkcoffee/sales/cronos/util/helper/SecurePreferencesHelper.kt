@@ -1,8 +1,8 @@
 package com.premierdarkcoffee.sales.cronos.util.helper
 
 //
-//  DistanceHelper.kt
-//  Hermes
+//  SecurePreferencesHelper.kt
+//  Cronos
 //
 //  Created by José Ruiz on 8/8/24.
 //

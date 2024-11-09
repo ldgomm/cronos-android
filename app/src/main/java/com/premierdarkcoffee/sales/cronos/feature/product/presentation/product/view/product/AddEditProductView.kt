@@ -89,6 +89,7 @@ import com.premierdarkcoffee.sales.cronos.R.string.subcategory_label
 import com.premierdarkcoffee.sales.cronos.R.string.update_product_label
 import com.premierdarkcoffee.sales.cronos.R.string.warning_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.year_label
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Offer
@@ -100,7 +101,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Sub
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common.InformationListView
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.four
@@ -159,8 +159,8 @@ fun AddEditProductView(
     val domains: List<Domain> = group.domains
     val subclasses: List<Subclass> = domain.subclasses
 
-    var amountText by remember { mutableStateOf(product?.price?.amount.toString()) }
-    var amount by remember { mutableDoubleStateOf(product?.price?.amount!!) }
+    var amountText by remember { mutableStateOf(product?.price?.amount?.toString() ?: "0.0") }
+    var amount by remember { mutableDoubleStateOf(product?.price?.amount ?: 0.0) }
 
     var isOfferActive: Boolean by remember { mutableStateOf(product?.price?.offer?.isActive ?: false) }
     var discount: Int by remember { mutableIntStateOf(product?.price?.offer?.discount ?: 0) }
@@ -572,6 +572,7 @@ fun ImageCard(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
+            .height(300.dp)
             .padding(vertical = six)
             .padding(horizontal = eleven),
         shape = MaterialTheme.shapes.medium,
