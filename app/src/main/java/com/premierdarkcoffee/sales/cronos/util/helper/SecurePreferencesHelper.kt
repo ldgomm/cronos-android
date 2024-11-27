@@ -32,11 +32,11 @@ object SecurePreferencesHelper {
         return getSecurePreferences(context).getString(API_KEY, "")
     }
 
-    fun setApiKey(
+    fun saveApiKey(
         context: Context,
-        token: String
+        apiKey: String
     ) {
-        getSecurePreferences(context).edit().putString(API_KEY, token).apply()
+        getSecurePreferences(context).edit().putString(API_KEY, apiKey).apply()
     }
 
     fun deleteApiKey(context: Context) {

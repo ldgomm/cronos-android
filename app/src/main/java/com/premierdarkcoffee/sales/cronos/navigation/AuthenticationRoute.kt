@@ -18,13 +18,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
 
-fun NavGraphBuilder.authenticationRoute(onSubmitApiKeyButtonClicked: (apiKey: String) -> Unit) {
+fun NavGraphBuilder.authenticationRoute(onSubmitApiKeyButtonClicked: () -> Unit) {
     composable<AuthenticationRoute> {
         AuthenticationView(onSubmitApiKeyButtonClicked)
     }
@@ -32,10 +34,11 @@ fun NavGraphBuilder.authenticationRoute(onSubmitApiKeyButtonClicked: (apiKey: St
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthenticationView(onSubmitApiKeyButtonClicked: (apiKey: String) -> Unit) {
+fun AuthenticationView(onSubmitApiKeyButtonClicked: () -> Unit) {
     var inputText by remember { mutableStateOf(TextFieldValue("")) }
     var isValidKey by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
     // Function to validate API key format
     fun validateApiKey(apiKey: String): Boolean {
         if (apiKey.length != 32) return false
@@ -72,7 +75,8 @@ fun AuthenticationView(onSubmitApiKeyButtonClicked: (apiKey: String) -> Unit) {
                 Button(
                     onClick = {
                         if (isValidKey) {
-                            onSubmitApiKeyButtonClicked(inputText.text)
+                            SecurePreferencesHelper.saveApiKey(context, inputText.text)
+                            onSubmitApiKeyButtonClicked()
                         } else {
                             println("Invalid API key format")
                         }
