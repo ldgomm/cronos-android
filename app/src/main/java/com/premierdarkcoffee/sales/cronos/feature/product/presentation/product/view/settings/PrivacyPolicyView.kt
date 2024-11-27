@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,74 +34,66 @@ fun PrivacyPolicyView(modifier: Modifier = Modifier) {
             // Section 1: Introduction
             item {
                 SettingsSectionView(
-                    title = "1. Introduction", content = """
-                    Welcome to the Store Application. We are committed to protecting the data related to your store and products. This Privacy Policy explains how we collect, use, and safeguard your information when you use our platform. Please review it carefully, and contact us if you have any questions or concerns.
+                    title = "1. Introduction",
+                    content = """
+                        Welcome to Cronos, the Administrator App. This application is designed exclusively for managing enterprise-related tasks and operations within the Premier Dark Coffee ecosystem. Cronos ensures a secure and private environment for administrators, as no personal data is collected or stored.
                     """.trimIndent()
                 )
             }
 
-            // Section 2: Information We Collect
+            // Section 2: No Collection of Personal Data
             item {
                 SettingsSectionView(
-                    title = "2. Information We Collect",
-                    content = "We collect the following types of information to provide and improve our services:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Store Information: When you manage your store through the application, we collect details such as store name, location, contact information, and operating hours.",
-                        "Product Information: We collect information about the products you upload to your store, including product names, descriptions, images, prices, and availability.",
-                        "Communication Data: We collect data from conversations between store owners and customers conducted through the app for customer service purposes."
-                    )
+                    title = "2. No Collection of Personal Data",
+                    content = """
+                        Our application does not collect or store any personal information from administrators. Access to the app is securely handled using API key authentication, ensuring that no names, emails, or other identifiable information are processed or retained.
+                    """.trimIndent()
                 )
             }
 
             // Section 3: Authentication
             item {
                 SettingsSectionView(
-                    title = "3. Authentication", content = "Authentication for the Store Application is handled securely through:"
+                    title = "3. Authentication",
+                    content = """
+                        Authentication in Cronos is managed through API keys. Administrators are issued unique API keys to securely access the application. These keys are:
+                    """.trimIndent()
                 )
                 BulletPointList(
                     bulletPoints = listOf(
-                        "Apple Sign-In (iOS): Administrators and store owners authenticate using their Apple credentials. No login information is stored by the app itself.",
-                        "Google Sign-In (Android): Administrators and store owners authenticate using their Google credentials, ensuring secure access without storing user login information."
+                        "Encrypted: API keys are securely encrypted and stored locally on the administrator’s device.",
+                        "Non-expiring: Keys do not expire automatically but can be manually revoked or reset if necessary.",
+                        "Secure: Once an administrator logs out, the API key is removed from the device to ensure security."
                     )
                 )
             }
 
-            // Section 4: How We Use Your Information
+            // Section 4: Data Usage and Security
             item {
                 SettingsSectionView(
-                    title = "4. How We Use Your Information", content = "We use your store and product information to:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Provide access to the app's features for managing your store and products.",
-                        "Display relevant product information to customers on the platform.",
-                        "Facilitate communication between store owners and customers in real-time."
-                    )
+                    title = "4. Data Usage and Security",
+                    content = """
+                        While Cronos does not collect personal information, it ensures secure interactions by using industry-standard encryption protocols such as HTTPS. This guarantees that all communication between the app and the backend systems is encrypted and protected. Only authorized administrators with valid API keys can access enterprise-related data.
+                    """.trimIndent()
                 )
             }
 
-            // Section 5: Sharing of Your Information
+            // Section 5: Sharing of Information
             item {
                 SettingsSectionView(
-                    title = "5. Sharing of Your Information",
-                    content = "We do not sell or share your store information with third parties, except in the following cases:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Legal Requirements: If required by law, we may disclose your information to comply with legal obligations.",
-                        "Service Providers: We may share your information with service providers who help maintain and improve the platform. These providers are contractually obligated to protect your data.",
-                        "Business Transfers: If the platform is involved in a merger, acquisition, or sale, your information may be transferred as part of the transaction."
-                    )
+                    title = "5. Sharing of Information",
+                    content = """
+                        Cronos does not share any data with third parties. As no personal data is collected or processed, there is no information to disclose. The API keys remain secure and are only used to validate access to the app’s functionality.
+                    """.trimIndent()
                 )
             }
 
             // Section 6: Data Security
             item {
                 SettingsSectionView(
-                    title = "6. Data Security", content = """
-                    We use industry-standard security measures to protect your store and product data. All data transmitted between your device and our servers is encrypted using HTTPS, ensuring secure transmission. We also use security protocols, such as JWT (JSON Web Tokens), for authentication management. While we make every effort to protect your data, no system is completely secure, and we are continuously improving our security measures.
+                    title = "6. Data Security",
+                    content = """
+                        Although Cronos does not store personal data, we adhere to best security practices to protect all app interactions. Encrypted communication channels and local storage for API keys ensure that only authorized administrators have access to enterprise systems and information.
                     """.trimIndent()
                 )
             }
@@ -110,40 +101,49 @@ fun PrivacyPolicyView(modifier: Modifier = Modifier) {
             // Section 7: Data Retention
             item {
                 SettingsSectionView(
-                    title = "7. Data Retention", content = """
-                    We will retain your store and product information for as long as necessary to provide our services or as required by law. If you decide to delete your store or remove your data, all information will be permanently deleted unless we are required by law to retain it.
+                    title = "7. Data Retention",
+                    content = """
+                        Cronos does not retain user sessions or store personal information. API keys are stored only during active use and are deleted when the administrator logs out or revokes access manually.
                     """.trimIndent()
                 )
             }
 
-            // Section 8: Your Privacy Rights
+            // Section 8: Privacy Rights
             item {
                 SettingsSectionView(
-                    title = "8. Your Privacy Rights", content = "As a store owner, you have the following rights:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Access: You can request access to the data we have collected about your store and products.",
-                        "Correction: If any of your store or product information is incorrect, you can update it directly within the app.",
-                        "Deletion: You can request that we delete your store and product data from our systems."
-                    )
-                )
-            }
-
-            // Section 9: Changes to This Policy
-            item {
-                SettingsSectionView(
-                    title = "9. Changes to This Policy", content = """
-                    We may update this Privacy Policy from time to time to reflect changes in the application or legal requirements. You will be notified of any significant changes through the app or email. Continued use of the platform following any updates signifies your acceptance of the revised policy.
+                    title = "8. Privacy Rights",
+                    content = """
+                        As Cronos does not collect or store personal data, no data management rights are applicable to administrators. For concerns related to authentication security or API key management, please contact the enterprise support team at Premier Dark Coffee.
                     """.trimIndent()
                 )
             }
 
-            // Section 11: Update Visibility
+            // Section 9: Updates to This Policy
             item {
                 SettingsSectionView(
-                    title = "11. Changes to This Policy", content = """
-                    Any changes to this policy will only take effect once a new update of the Maia app is published. This ensures that all users will be able to view the updated policy natively within the application. We encourage you to keep your app updated to stay informed of any changes.
+                    title = "9. Updates to This Policy",
+                    content = """
+                        This Privacy Policy may be updated periodically to reflect changes in the application or legal requirements. Updates will be communicated through internal enterprise channels. Continued use of Cronos after any updates indicates your acceptance of the revised policy.
+                    """.trimIndent()
+                )
+            }
+
+            // Section 10: Contact Us
+            item {
+                SettingsSectionView(
+                    title = "10. Contact Us",
+                    content = """
+                        If you have any questions regarding this Privacy Policy, please contact us at support@premierdarkcoffee.com.
+                    """.trimIndent()
+                )
+            }
+
+            // Section 11: Changes to This Policy
+            item {
+                SettingsSectionView(
+                    title = "11. Changes to This Policy",
+                    content = """
+                        Any changes to this policy will take effect only when a new version of Cronos is published. This ensures that all administrators can view the updated policy natively within the app. We encourage you to keep your app updated to stay informed of any changes.
                     """.trimIndent()
                 )
             }
@@ -151,25 +151,17 @@ fun PrivacyPolicyView(modifier: Modifier = Modifier) {
             // Section 12: Response Time
             item {
                 SettingsSectionView(
-                    title = "12. Response Time", content = """
-                    Please note that while we strive to respond to all inquiries as quickly as possible, there may be times when responses take a couple of days to be attended due to operational constraints. We appreciate your patience and understanding.
+                    title = "12. Response Time",
+                    content = """
+                        Please note that while we strive to respond to all inquiries as quickly as possible, there may be times when responses take a couple of days due to operational constraints. We appreciate your patience and understanding.
                     """.trimIndent()
-                )
-            }
-
-            // Contact Information
-            item {
-                Text(
-                    text = "If you have any questions or need assistance, please contact us at privacy@premierdarkcoffee.com.",
-                    color = Color.Blue,
-                    style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             // Footer
             item {
                 Text(
-                    text = "© 2024 Maia, Premier Dark Coffee. All Rights Reserved.",
+                    text = "© 2024 Cronos, Premier Dark Coffee. All Rights Reserved.",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 50.dp)
                 )

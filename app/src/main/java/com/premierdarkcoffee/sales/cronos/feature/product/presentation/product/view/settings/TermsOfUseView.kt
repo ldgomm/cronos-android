@@ -29,14 +29,13 @@ fun TermsOfUseView(modifier: Modifier = Modifier) {
         LazyColumn(
             modifier = modifier
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Section 1: Introduction
             item {
                 SettingsSectionView(
                     title = "1. Introduction",
-                    content = "Welcome to Maia, an application designed for store owners to manage their products, sales, and customer interactions within the Premier Dark Coffee platform. Maia is intended solely for authorized store owners, and access to the app is restricted to approved users."
+                    content = "Welcome to Cronos, an application designed for administrators to manage enterprise tasks and operations within the Premier Dark Coffee platform. Cronos is intended solely for authorized administrators, and access to the app is restricted to approved users."
                 )
             }
 
@@ -44,62 +43,71 @@ fun TermsOfUseView(modifier: Modifier = Modifier) {
             item {
                 SettingsSectionView(
                     title = "2. User Eligibility",
-                    content = "The use of Maia is limited to store owners who are registered and approved by Premier Dark Coffee. Unauthorized use of the app is strictly prohibited."
+                    content = "The use of Cronos is limited to authorized administrators who are granted access by Premier Dark Coffee. Unauthorized use of the app is strictly prohibited."
                 )
             }
 
             // Section 3: Authentication
             item {
                 SettingsSectionView(
-                    title = "3. Authentication", content = "Authentication to Maia is handled through third-party services:"
+                    title = "3. Authentication",
+                    content = "Authentication to Cronos is handled through secure API key verification. Administrators use their API key to access the app, and no personal information is collected or stored within Cronos."
+                )
+            }
+
+            // Section 4: Administrative Management and Updates
+            item {
+                SettingsSectionView(
+                    title = "4. Administrative Management and Updates",
+                    content = "Administrators can manage and update system settings and operational data. However, sensitive operations should be performed with caution to ensure data consistency and accuracy within the platform."
+                )
+            }
+
+            // Section 5: Data Security
+            item {
+                SettingsSectionView(
+                    title = "5. Data Security",
+                    content = "All interactions within Cronos are secured using industry-standard encryption protocols (such as HTTPS). Administrators are responsible for safeguarding their API keys and ensuring they access the app in a secure environment. Sharing API keys with unauthorized parties is strictly prohibited."
+                )
+            }
+
+            // Section 6: Prohibited Activities
+            item {
+                SettingsSectionView(
+                    title = "6. Prohibited Activities", content = "Administrators of Cronos are prohibited from engaging in the following activities:"
                 )
                 BulletPointList(
                     bulletPoints = listOf(
-                        "Apple Sign-In (iOS): Users authenticate via their Apple credentials, ensuring secure access to the app without Maia storing login credentials.",
-                        "Google Sign-In (Android): Users authenticate via their Google credentials, similarly ensuring secure access without Maia retaining login data."
+                        "Attempting to bypass security measures or gain unauthorized access to data.",
+                        "Using the app for illegal activities or purposes not authorized by Premier Dark Coffee.",
+                        "Tampering with or reverse-engineering the Cronos app or its components."
                     )
                 )
             }
 
-            // Section 4: Product Management and Updates
+            // Section 7: Termination
             item {
                 SettingsSectionView(
-                    title = "4. Product Management and Updates",
-                    content = "Store owners can manage and update product information, including images, descriptions, and prices. However, some areas of product information may be updated or modified by the administrator without the store’s explicit permission when necessary to ensure consistency or accuracy."
+                    title = "7. Termination",
+                    content = "Premier Dark Coffee reserves the right to revoke access to Cronos at any time without prior notice in the event of misuse or unauthorized access. Access will also be terminated if the administrator’s authorization is revoked."
                 )
             }
 
-            // Section 5: Image and Content Guidelines
+            // Section 8: Limitation of Liability
             item {
                 SettingsSectionView(
-                    title = "5. Image and Content Guidelines", content = "When uploading product images, stores must ensure that:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Images are 1024x1024 pixels in size.",
-                        "No phone numbers, contact information, or other personal details are included outside of what the app provides."
-                    )
-                )
-                Text(
-                    text = "Stores should update product information only when strictly necessary, as existing information is considered valid. Improper updates or inclusion of unauthorized details may result in penalties or content removal."
+                    title = "8. Limitation of Liability",
+                    content = "Cronos is provided \"as-is\" without any warranties. Premier Dark Coffee is not liable for any data loss, security breaches, or other damages arising from the use or inability to use the app, except where required by law."
                 )
             }
 
-            // Section 6: Communication with Clients
+            // Section 9: Updates to Terms
             item {
                 SettingsSectionView(
-                    title = "6. Communication with Clients", content = "When chatting with clients through the app, stores must:"
-                )
-                BulletPointList(
-                    bulletPoints = listOf(
-                        "Be polite and professional at all times.",
-                        "Follow the same guidelines for content and image updates.",
-                        "Never request personal information from clients, as the system and app are designed to respect the absolute privacy of customers."
-                    )
+                    title = "9. Updates to Terms",
+                    content = "Premier Dark Coffee may update these Terms of Use from time to time. Any changes will take effect once a new version of the app is published, ensuring administrators can review the updated terms within the app. Continued use of the app after updates signifies acceptance of the revised terms."
                 )
             }
-
-            // Add more sections in the same manner
 
             // Contact Information
             item {
@@ -113,7 +121,7 @@ fun TermsOfUseView(modifier: Modifier = Modifier) {
             // Footer
             item {
                 Text(
-                    text = "© 2024 Premier Dark Coffee. All Rights Reserved.",
+                    text = "© 2024 Cronos, Premier Dark Coffee. All Rights Reserved.",
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 50.dp)
                 )
@@ -121,3 +129,4 @@ fun TermsOfUseView(modifier: Modifier = Modifier) {
         }
     }
 }
+
