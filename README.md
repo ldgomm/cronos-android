@@ -84,4 +84,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 For questions or support, please reach out to:
 - **Email:** admin@cronosapp.com
-- **GitHub Issues:** [Issue Tracker](https://github.com/yourusername/cronos-android/issues)
+- **GitHub Issues:** [Issue Tracker](https://github.com/ldgomm/cronos-android/issues)
