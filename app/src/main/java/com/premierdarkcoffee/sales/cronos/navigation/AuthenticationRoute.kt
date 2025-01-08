@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -55,12 +55,10 @@ fun AuthenticationView(onSubmitApiKeyButtonClicked: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .padding(16.dp), contentAlignment = Alignment.Center
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
         ) {
             // Title
             Text(
@@ -98,8 +96,6 @@ fun AuthenticationView(onSubmitApiKeyButtonClicked: () -> Unit) {
                 )
             )
 
-            TextField("6Y-ft0-grCS4-CJLxBSj-MXktZaqEqjD", onValueChange = {})
-
             // Error Message
             if (!isValidKey && inputText.text.isNotEmpty()) {
                 Text(
@@ -115,12 +111,9 @@ fun AuthenticationView(onSubmitApiKeyButtonClicked: () -> Unit) {
                 onClick = {
                     SecurePreferencesHelper.saveApiKey(context, inputText.text)
                     onSubmitApiKeyButtonClicked()
-                },
-                enabled = isValidKey,
-                modifier = Modifier
+                }, enabled = isValidKey, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(
+                    .padding(16.dp), colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
@@ -131,4 +124,10 @@ fun AuthenticationView(onSubmitApiKeyButtonClicked: () -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun AuthenticationView_Preview() {
+    AuthenticationView(onSubmitApiKeyButtonClicked = {})
 }

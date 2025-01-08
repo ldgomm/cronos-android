@@ -73,18 +73,10 @@ fun NavGraphBuilder.addEditProductRoute(
                            setLegal = viewModel::setLegal,
                            setWarning = viewModel::setWarning,
                            addProduct = { product ->
-                               viewModel.addProduct(
-                                   product = product,
-                                   token,
-                                   onSuccess = onBackToProductsActionTriggered,
-                                   onFailure = {})
+                               viewModel.addProduct(product = product, token, onSuccess = onBackToProductsActionTriggered, onFailure = {})
                            },
                            updateProduct = { product ->
-                               viewModel.updateProduct(
-                                   product,
-                                   token,
-                                   onSuccess = onBackToProductsActionTriggered,
-                                   onFailure = {})
+                               viewModel.updateProduct(product, token, onSuccess = onBackToProductsActionTriggered, onFailure = {})
                            })
     }
 }

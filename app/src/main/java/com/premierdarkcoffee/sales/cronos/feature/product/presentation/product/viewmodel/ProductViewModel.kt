@@ -269,9 +269,7 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 addEditedProductUseCase(
-                    getUrlFor(endpoint = "cronos-products"),
-                    PostProductRequest(key = cronosKey, product = product.toProductDto()),
-                    apiKey
+                    getUrlFor(endpoint = "cronos-products"), PostProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
                 ).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
@@ -307,9 +305,7 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 updateProductUseCase(
-                    getUrlFor(endpoint = "cronos-products"),
-                    PutProductRequest(key = cronosKey, product = product.toProductDto()),
-                    apiKey
+                    getUrlFor(endpoint = "cronos-products"), PutProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
                 ).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
