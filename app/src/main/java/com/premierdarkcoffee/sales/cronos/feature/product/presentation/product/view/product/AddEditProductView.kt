@@ -102,10 +102,10 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditPr
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
 import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
-import com.premierdarkcoffee.sales.sales.util.constant.Constant.eleven
-import com.premierdarkcoffee.sales.sales.util.constant.Constant.four
-import com.premierdarkcoffee.sales.sales.util.constant.Constant.six
-import com.premierdarkcoffee.sales.sales.util.constant.paises
+import com.premierdarkcoffee.sales.cronos.util.constant.Constant.eleven
+import com.premierdarkcoffee.sales.cronos.util.constant.Constant.four
+import com.premierdarkcoffee.sales.cronos.util.constant.Constant.six
+import com.premierdarkcoffee.sales.cronos.util.constant.paises
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

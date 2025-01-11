@@ -58,141 +58,116 @@ fun AddEditInformationView(onAddInformationResultStateButtonClick: (informationR
         .semantics { contentDescription = "Form for adding or editing information" }) {
 
         // Image Selection Card with Improved Accessibility
-        ElevatedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp)
-                .padding(horizontal = 11.dp),
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
-        ) {
+        ElevatedCard(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .padding(horizontal = 11.dp),
+                     shape = MaterialTheme.shapes.medium,
+                     elevation = CardDefaults.elevatedCardElevation(4.dp)) {
             selectedImageUri?.let { image ->
-                AsyncImage(
-                    model = image,
-                    contentDescription = "Selected image preview. Tap to change image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium)
-                        .padding(16.dp)
-                        .clickable {
-                            photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                        },
-                    contentScale = ContentScale.FillWidth
-                )
+                AsyncImage(model = image,
+                           contentDescription = "Selected image preview. Tap to change image",
+                           modifier = Modifier
+                               .fillMaxWidth()
+                               .clip(MaterialTheme.shapes.medium)
+                               .padding(16.dp)
+                               .clickable {
+                                   photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                               },
+                           contentScale = ContentScale.FillWidth)
             } ?: run {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .padding(bottom = 8.dp)
-                        .clickable {
-                            photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                        }
-                        .semantics { contentDescription = "Tap to select an image" },
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(bottom = 8.dp)
+                    .clickable {
+                        photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                    .semantics { contentDescription = "Tap to select an image" }, contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
         }
 
         // Title TextField
-        ElevatedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp)
-                .padding(horizontal = 11.dp),
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
-        ) {
-            TextField(
-                value = title,
-                onValueChange = { title = it },
-                label = { Text(text = "Title") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "Title input field" }
-            )
+        ElevatedCard(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .padding(horizontal = 11.dp),
+                     shape = MaterialTheme.shapes.medium,
+                     elevation = CardDefaults.elevatedCardElevation(4.dp)) {
+            TextField(value = title,
+                      onValueChange = { title = it },
+                      label = { Text(text = "Title") },
+                      modifier = Modifier
+                          .fillMaxWidth()
+                          .semantics { contentDescription = "Title input field" })
         }
 
         // Subtitle TextField
-        ElevatedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp)
-                .padding(horizontal = 11.dp),
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
-        ) {
-            TextField(
-                value = subtitle,
-                onValueChange = { subtitle = it },
-                label = { Text(text = "Subtitle") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "Subtitle input field" }
-            )
+        ElevatedCard(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .padding(horizontal = 11.dp),
+                     shape = MaterialTheme.shapes.medium,
+                     elevation = CardDefaults.elevatedCardElevation(4.dp)) {
+            TextField(value = subtitle,
+                      onValueChange = { subtitle = it },
+                      label = { Text(text = "Subtitle") },
+                      modifier = Modifier
+                          .fillMaxWidth()
+                          .semantics { contentDescription = "Subtitle input field" })
         }
 
         // Description TextField
-        ElevatedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp)
-                .padding(horizontal = 11.dp),
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.elevatedCardElevation(4.dp)
-        ) {
-            TextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text(text = "Description") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "Description input field" }
-            )
+        ElevatedCard(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
+            .padding(horizontal = 11.dp),
+                     shape = MaterialTheme.shapes.medium,
+                     elevation = CardDefaults.elevatedCardElevation(4.dp)) {
+            TextField(value = description,
+                      onValueChange = { description = it },
+                      label = { Text(text = "Description") },
+                      modifier = Modifier
+                          .fillMaxWidth()
+                          .semantics { contentDescription = "Description input field" })
         }
 
         // Submit Button with Feedback Handling
-        Button(
-            onClick = {
-                if (isProcessing) return@Button // Prevent multiple clicks
-                isProcessing = true
-                scope.launch(Dispatchers.Main) {
-                    selectedImageUri?.let { uri ->
-                        try {
-                            uploadImageToFirebase(
-                                context = context,
-                                contentResolver = context.contentResolver,
-                                uri = uri,
-                                path = "information"
-                            ) { imageInfo: ImageInfo ->
-                                val informationResultState = InformationResultState(
-                                    id = UUID.randomUUID().toString(),
-                                    title = title,
-                                    subtitle = subtitle,
-                                    description = description,
-                                    image = uri,
-                                    path = imageInfo.path,
-                                    url = imageInfo.url,
-                                    belongs = false,
-                                    place = 0,
-                                    isCreated = true,
-                                    isDeleted = false
-                                )
-                                onAddInformationResultStateButtonClick(informationResultState)
-                            }
-                        } finally {
-                            isProcessing = false
+        Button(onClick = {
+            if (isProcessing) return@Button // Prevent multiple clicks
+            isProcessing = true
+            scope.launch(Dispatchers.Main) {
+                selectedImageUri?.let { uri ->
+                    try {
+                        uploadImageToFirebase(context = context,
+                                              contentResolver = context.contentResolver,
+                                              uri = uri,
+                                              path = "information") { imageInfo: ImageInfo ->
+                            val informationResultState = InformationResultState(id = UUID.randomUUID().toString(),
+                                                                                title = title,
+                                                                                subtitle = subtitle,
+                                                                                description = description,
+                                                                                image = uri,
+                                                                                path = imageInfo.path,
+                                                                                url = imageInfo.url,
+                                                                                belongs = false,
+                                                                                place = 0,
+                                                                                isCreated = true,
+                                                                                isDeleted = false)
+                            onAddInformationResultStateButtonClick(informationResultState)
                         }
+                    } finally {
+                        isProcessing = false
                     }
                 }
-            },
-            modifier = Modifier
-                .padding(16.dp)
-                .semantics { contentDescription = "Submit button. Tap to save the information" },
-            enabled = !isProcessing
-        ) {
+            }
+        },
+               modifier = Modifier
+                   .padding(16.dp)
+                   .semantics { contentDescription = "Submit button. Tap to save the information" },
+               enabled = !isProcessing) {
             Text("Submit")
         }
     }

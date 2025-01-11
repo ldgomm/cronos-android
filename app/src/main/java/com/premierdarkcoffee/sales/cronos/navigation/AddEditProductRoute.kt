@@ -18,10 +18,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.v
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
 import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
-fun NavGraphBuilder.addEditProductRoute(
-    navController: NavHostController,
-    onBackToProductsActionTriggered: () -> Unit
-) {
+fun NavGraphBuilder.addEditProductRoute(navController: NavHostController, onBackToProductsActionTriggered: () -> Unit) {
     composable<AddEditProductRoute> { backStackEntry ->
         val viewModel = backStackEntry.sharedViewModel<ProductViewModel>(navController = navController)
 
@@ -63,20 +60,26 @@ fun NavGraphBuilder.addEditProductRoute(
                            setStock = viewModel::setStock,
                            setImage = viewModel::setImage,
                            setOrigin = viewModel::setOrigin,
-            //overview
+                //overview
                            informationResultStateList = informationResultStateList,
                            addInformationResultState = viewModel::addInformationResultState,
                            addKeyword = viewModel::addKeyword,
                            deleteKeyword = viewModel::deleteKeyword,
-            //specifications
-            //warranty
+                //specifications
+                //warranty
                            setLegal = viewModel::setLegal,
                            setWarning = viewModel::setWarning,
                            addProduct = { product ->
-                               viewModel.addProduct(product = product, token, onSuccess = onBackToProductsActionTriggered, onFailure = {})
+                               viewModel.addProduct(product = product,
+                                                    token,
+                                                    onSuccess = onBackToProductsActionTriggered,
+                                                    onFailure = {})
                            },
                            updateProduct = { product ->
-                               viewModel.updateProduct(product, token, onSuccess = onBackToProductsActionTriggered, onFailure = {})
+                               viewModel.updateProduct(product,
+                                                       token,
+                                                       onSuccess = onBackToProductsActionTriggered,
+                                                       onFailure = {})
                            })
     }
 }
