@@ -4,11 +4,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.I
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ImageDto(
-    val path: String? = null,
-    val url: String,
-    val belongs: Boolean
-) {
+data class ImageDto(val path: String? = null, val url: String, val belongs: Boolean) {
 
     fun toImage(): Image {
         return Image(path = path, url = url, belongs = belongs)

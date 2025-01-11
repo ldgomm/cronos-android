@@ -14,17 +14,12 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.Informati
 @Composable
 fun InformationListView(informationResultStateList: List<InformationResultState>) {
 
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 11.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.semantics {
-            contentDescription = "Horizontal list of information cards"
-        }
-    ) {
-        items(
-            items = informationResultStateList.filterNot { it.isDeleted },
-            key = { it.id }
-        ) { resultState ->
+    LazyRow(contentPadding = PaddingValues(horizontal = 11.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.semantics {
+                contentDescription = "Horizontal list of information cards"
+            }) {
+        items(items = informationResultStateList.filterNot { it.isDeleted }, key = { it.id }) { resultState ->
             InformationCardView(resultState = resultState)
         }
     }

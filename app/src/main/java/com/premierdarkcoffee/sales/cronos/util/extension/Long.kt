@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.sales.util.extension
+package com.premierdarkcoffee.sales.cronos.util.extension
 
 //
 //  Long.kt

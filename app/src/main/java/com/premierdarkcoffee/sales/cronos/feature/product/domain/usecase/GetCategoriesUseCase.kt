@@ -1,7 +1,7 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase
 
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.ProductServiceable
-import com.premierdarkcoffee.sales.sales.util.constant.Categories
+import com.premierdarkcoffee.sales.cronos.util.constant.Categories
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

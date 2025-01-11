@@ -29,26 +29,24 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.Informati
 @Composable
 fun InformationCardView(resultState: InformationResultState) {
 
-    ElevatedCard(
-        modifier = Modifier
-            .width(250.dp)
-            .semantics {
-                contentDescription = "Card showing information about ${resultState.title}"
-            }, // Overall card description
-        shape = RoundedCornerShape(11.dp), elevation = CardDefaults.elevatedCardElevation(4.dp)
-    ) {
+    ElevatedCard(modifier = Modifier
+        .width(250.dp)
+        .semantics {
+            contentDescription = "Card showing information about ${resultState.title}"
+        }, // Overall card description
+                 shape = RoundedCornerShape(11.dp), elevation = CardDefaults.elevatedCardElevation(4.dp)) {
         Column(modifier = Modifier
             .padding(2.dp)
             .fillMaxSize()
             .semantics(mergeDescendants = true) {} // Merge children for a single focus point
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(resultState.image), contentDescription = resultState.title,  // Descriptive content
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(bottom = 8.dp), contentScale = ContentScale.Crop
-            )
+            Image(painter = rememberAsyncImagePainter(resultState.image),
+                  contentDescription = resultState.title,  // Descriptive content
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .height(150.dp)
+                      .padding(bottom = 8.dp),
+                  contentScale = ContentScale.Crop)
         }
 
         Spacer(modifier = Modifier.height(8.dp))

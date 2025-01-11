@@ -17,10 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
-import com.premierdarkcoffee.sales.sales.util.constant.Categories
-import com.premierdarkcoffee.sales.sales.util.constant.Mi
-import com.premierdarkcoffee.sales.sales.util.constant.Ni
-import com.premierdarkcoffee.sales.sales.util.constant.Xi
+import com.premierdarkcoffee.sales.cronos.util.constant.Categories
+import com.premierdarkcoffee.sales.cronos.util.constant.Mi
+import com.premierdarkcoffee.sales.cronos.util.constant.Ni
+import com.premierdarkcoffee.sales.cronos.util.constant.Xi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
