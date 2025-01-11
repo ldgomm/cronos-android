@@ -11,6 +11,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.P
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Group
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
@@ -22,7 +23,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetProd
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.UpdateProductUseCase
 import com.premierdarkcoffee.sales.cronos.util.function.getUrlFor
 import com.premierdarkcoffee.sales.cronos.util.key.getCronosKey
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -35,15 +35,13 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(
-    application: Application,
+class ProductViewModel @Inject constructor(application: Application,
 
-    private val getProductsUseCase: GetProductsUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val addEditedProductUseCase: AddProductUseCase,
-    private val updateProductUseCase: UpdateProductUseCase,
-    private val getGroupsUseCase: GetGroupsUseCase
-) : AndroidViewModel(application) {
+                                           private val getProductsUseCase: GetProductsUseCase,
+                                           private val getCategoriesUseCase: GetCategoriesUseCase,
+                                           private val addEditedProductUseCase: AddProductUseCase,
+                                           private val updateProductUseCase: UpdateProductUseCase,
+                                           private val getGroupsUseCase: GetGroupsUseCase) : AndroidViewModel(application) {
 
     // Store key associated with the application instance
     private val cronosKey = getCronosKey(getApplication<Application>().applicationContext)
@@ -108,10 +106,7 @@ class ProductViewModel @Inject constructor(
      * @param storeId The ID of the store to search within.
      * @param text The search text input.
      */
-    private fun searchStoreProduct(
-        text: String,
-        apiKey: String
-    ) {
+    private fun searchStoreProduct(text: String, apiKey: String) {
         if (text.isEmpty()) {
             // When the search text is empty, display the original product list
             getProducts(apiKey)
@@ -125,9 +120,7 @@ class ProductViewModel @Inject constructor(
         val regex = searchText.split("\\s+".toRegex()).joinToString("|") { Regex.escape(it) }.toRegex(RegexOption.IGNORE_CASE)
 
         val filteredProducts = _productsState.value.products?.filter { product ->
-            listOfNotNull(
-                product.name, product.label, product.owner, product.model, product.description
-            ).any { field ->
+            listOfNotNull(product.name, product.label, product.owner, product.model, product.description).any { field ->
                 regex.containsMatchIn(field)
             }
         }
@@ -160,11 +153,8 @@ class ProductViewModel @Inject constructor(
      * @param storeId The ID of the store to fetch products from, or null for all stores.
      * @param text The search text input, or null to fetch all products.
      */
-    private fun executeProductSearch(
-        text: String? = null,
-        apiKey: String
-    ) {
-        val url = getUrlFor(endpoint = "cronos-brandoun-products", keywords = text)
+    private fun executeProductSearch(text: String? = null, apiKey: String) {
+        val url = getUrlFor(endpoint = "cronos-amira-products", keywords = text)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getProductsUseCase(url, apiKey).collect { result ->
@@ -228,16 +218,14 @@ class ProductViewModel @Inject constructor(
 
             product.overview.forEach { result ->
                 result.image.path?.let { path ->
-                    val informationResult = InformationResultState(
-                        id = result.id,
-                        title = result.title,
-                        subtitle = result.subtitle,
-                        description = result.description,
-                        path = path,
-                        url = result.image.url,
-                        belongs = result.image.belongs,
-                        place = result.place
-                    )
+                    val informationResult = InformationResultState(id = result.id,
+                                                                   title = result.title,
+                                                                   subtitle = result.subtitle,
+                                                                   description = result.description,
+                                                                   path = path,
+                                                                   url = result.image.url,
+                                                                   belongs = result.image.belongs,
+                                                                   place = result.place)
                     addInformationResultState(informationResult)
                 }
             }
@@ -260,17 +248,12 @@ class ProductViewModel @Inject constructor(
      * @param onSuccess A callback invoked upon successful addition.
      * @param onFailure A callback invoked when the addition fails.
      */
-    fun addProduct(
-        product: Product,
-        apiKey: String,
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
-    ) {
+    fun addProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                addEditedProductUseCase(
-                        getUrlFor(endpoint = "cronos-products"), PostProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
-                ).collect { result ->
+                addEditedProductUseCase(getUrlFor(endpoint = "cronos-products"),
+                                        PostProductRequest(key = cronosKey, product = product.toProductDto()),
+                                        apiKey).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
                             onSuccess()
@@ -296,17 +279,12 @@ class ProductViewModel @Inject constructor(
      * @param onSuccess A callback invoked upon successful update.
      * @param onFailure A callback invoked when the update fails.
      */
-    fun updateProduct(
-        product: Product,
-        apiKey: String,
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
-    ) {
+    fun updateProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                updateProductUseCase(
-                    getUrlFor(endpoint = "cronos-products"), PutProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
-                ).collect { result ->
+                updateProductUseCase(getUrlFor(endpoint = "cronos-products"),
+                                     PutProductRequest(key = cronosKey, product = product.toProductDto()),
+                                     apiKey).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {
                             Log.d(TAG, "updateProduct: Product updated")
