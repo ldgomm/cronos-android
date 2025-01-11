@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.sales.util.constant
+package com.premierdarkcoffee.sales.cronos.util.constant
 
 import kotlinx.serialization.Serializable
 

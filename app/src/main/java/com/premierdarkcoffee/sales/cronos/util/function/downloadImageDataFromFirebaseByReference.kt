@@ -1,15 +1,5 @@
 package com.premierdarkcoffee.sales.cronos.util.function
 
-import android.content.ContentValues.TAG
-import android.net.Uri
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.withTimeout
-import java.io.File
-import java.util.UUID
-import kotlin.coroutines.suspendCoroutine
-
 data class ImageInfo(val path: String, val url: String)
 
 //suspend fun downloadImageDataFromFirebaseByReference(path: String): ImageInfo = withTimeout(10000) { // 5000 ms timeout

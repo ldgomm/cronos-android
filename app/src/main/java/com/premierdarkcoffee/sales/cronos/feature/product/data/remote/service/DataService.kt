@@ -21,10 +21,7 @@ import javax.inject.Inject
 
 class DataService @Inject constructor(private val httpClient: HttpClient) : DataServiceable {
 
-    override fun addGroup(
-        url: String,
-        group: Group
-    ): Flow<Result<Group>> {
+    override fun addGroup(url: String, group: Group): Flow<Result<Group>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.post(url) {

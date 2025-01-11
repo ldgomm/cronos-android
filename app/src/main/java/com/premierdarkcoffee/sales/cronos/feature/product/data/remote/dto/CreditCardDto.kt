@@ -4,11 +4,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.C
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreditCardDto(
-    val withoutInterest: Int,
-    val withInterest: Int,
-    val freeMonths: Int
-) {
+data class CreditCardDto(val withoutInterest: Int, val withInterest: Int, val freeMonths: Int) {
 
     fun toCreditCard(): CreditCard {
         return CreditCard(withoutInterest = withoutInterest, withInterest = withInterest, freeMonths = freeMonths)
