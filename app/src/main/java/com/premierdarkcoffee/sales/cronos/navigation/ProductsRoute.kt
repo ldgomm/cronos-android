@@ -25,6 +25,7 @@ fun NavGraphBuilder.productsRoute(
         val viewModel = backStackEntry.sharedViewModel<ProductViewModel>(navController = navController)
         val productState by viewModel.productsState.collectAsState()
         val searchText by viewModel.searchText.collectAsState()
+        val groups by viewModel.groups.collectAsState()
 
         val context = LocalContext.current
         var token: String by remember { mutableStateOf("") }
@@ -37,6 +38,7 @@ fun NavGraphBuilder.productsRoute(
 
         ProductsView(productsState = productState,
                      searchText = searchText,
+                     groups = groups,
                      onSearchTextChange = viewModel::onSearchTextChange,
                      clearSearchText = { viewModel.clearSearchText(token) },
                      onNavigateToProductView = onNavigateToProductView,
