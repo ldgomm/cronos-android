@@ -15,12 +15,10 @@ import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.v
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
 import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
-fun NavGraphBuilder.productsRoute(
-    navController: NavHostController,
-    onNavigateToProductView: (String) -> Unit,
-    onAddNewProductButtonClicked: () -> Unit,
-    onNavigateToSettingsButtonClicked: () -> Unit
-) {
+fun NavGraphBuilder.productsRoute(navController: NavHostController,
+                                  onNavigateToProductView: (String) -> Unit,
+                                  onAddNewProductButtonClicked: () -> Unit,
+                                  onNavigateToSettingsButtonClicked: () -> Unit) {
     composable<ProductsRoute> { backStackEntry ->
         val viewModel = backStackEntry.sharedViewModel<ProductViewModel>(navController = navController)
         val productState by viewModel.productsState.collectAsState()

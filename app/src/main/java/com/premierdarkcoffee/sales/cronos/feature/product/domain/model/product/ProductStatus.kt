@@ -7,8 +7,6 @@ package com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product
 //  Created by José Ruiz on 8/11/24.
 //
 
-import javax.inject.Inject
-
 enum class ProductStatus {
     BLACKFRIDAY, CYBERMONDAY, THANKSGIVING, CHRISTMAS, NEWYEARSDAY, VALENTINESDAY, EASTER, LABORDAY, MOTHERSDAY, FATHERSDAY, INDEPENDENCEDAY, HALLOWEEN, NOEVENT
 }

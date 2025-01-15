@@ -23,10 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SectionView(
-    title: String,
-    content: @Composable () -> Unit
-) {
+fun SectionView(title: String, content: @Composable () -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 8.dp)
