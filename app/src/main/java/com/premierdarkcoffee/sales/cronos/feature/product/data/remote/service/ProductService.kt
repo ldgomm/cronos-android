@@ -3,11 +3,11 @@ package com.premierdarkcoffee.sales.cronos.feature.product.data.remote.service
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.MessageResponse
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.ProductServiceable
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
-import com.premierdarkcoffee.sales.sales.util.constant.Categories
+import com.premierdarkcoffee.sales.cronos.util.constant.Categories
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -34,10 +34,7 @@ import javax.inject.Inject
 
 class ProductService @Inject constructor(private val httpClient: HttpClient) : ProductServiceable {
 
-    override fun getProducts(
-        endpoint: String,
-        apiKey: String
-    ): Flow<Result<List<ProductDto>>> {
+    override fun getProducts(endpoint: String, apiKey: String): Flow<Result<List<ProductDto>>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.get(endpoint) {
@@ -64,11 +61,7 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
         }
     }
 
-    override fun addProduct(
-        url: String,
-        request: PostProductRequest,
-        apiKey: String
-    ): Flow<Result<MessageResponse>> {
+    override fun addProduct(url: String, request: PostProductRequest, apiKey: String): Flow<Result<MessageResponse>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.post(url) {
@@ -110,11 +103,7 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
         }
     }
 
-    override fun updateProduct(
-        url: String,
-        request: PutProductRequest,
-        apiKey: String
-    ): Flow<Result<MessageResponse>> {
+    override fun updateProduct(url: String, request: PutProductRequest, apiKey: String): Flow<Result<MessageResponse>> {
         return flow {
             try {
                 val response: HttpResponse = httpClient.put(url) {

@@ -17,11 +17,9 @@ import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.v
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
 import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
 
-fun NavGraphBuilder.productRoute(
-    navController: NavHostController,
-    onPopBackStackActionTriggered: () -> Unit,
-    onAddOrUpdateEditedProductButtonClick: (String) -> Unit
-) {
+fun NavGraphBuilder.productRoute(navController: NavHostController,
+                                 onPopBackStackActionTriggered: () -> Unit,
+                                 onAddOrUpdateEditedProductButtonClick: (String) -> Unit) {
     composable<ProductRoute> { backStackEntry ->
         val viewModel = backStackEntry.sharedViewModel<ProductViewModel>(navController = navController)
         val args = backStackEntry.toRoute<ProductRoute>()
@@ -37,10 +35,8 @@ fun NavGraphBuilder.productRoute(
             }
         }
 
-        ProductView(
-            product = product,
-            onPopBackStackActionTriggered = onPopBackStackActionTriggered,
-            onAddOrUpdateEditedProductButtonClick = onAddOrUpdateEditedProductButtonClick
-        )
+        ProductView(product = product,
+                    onPopBackStackActionTriggered = onPopBackStackActionTriggered,
+                    onAddOrUpdateEditedProductButtonClick = onAddOrUpdateEditedProductButtonClick)
     }
 }
