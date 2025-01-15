@@ -7,5 +7,4 @@ data class Warranty(val hasWarranty: Boolean, val details: List<String>, val mon
     fun toWarrantyDto(): WarrantyDto {
         return WarrantyDto(hasWarranty = hasWarranty, details = details, months = months)
     }
-
 }

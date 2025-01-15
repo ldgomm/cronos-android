@@ -16,9 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingsSectionView(title: String, content: String) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(text = title, style = MaterialTheme.typography.titleMedium)
         Text(text = content, style = MaterialTheme.typography.bodyMedium)
     }

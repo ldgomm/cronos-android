@@ -57,10 +57,7 @@ object SecurePreferencesHelper {
         return getSecurePreferences(context).getString(API_KEY, "6Y-ft0-grCS4-CJLxBSj-MXktZaqEqjD")
     }
 
-    fun saveApiKey(
-        context: Context,
-        apiKey: String
-    ) {
+    fun saveApiKey(context: Context, apiKey: String) {
         getSecurePreferences(context).edit().putString(API_KEY, apiKey).apply()
     }
 

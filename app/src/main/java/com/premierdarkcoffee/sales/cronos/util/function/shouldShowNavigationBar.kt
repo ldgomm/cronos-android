@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.premierdarkcoffee.sales.sales.util.constant.Constant.ignore
+import com.premierdarkcoffee.sales.cronos.util.constant.Constant.ignore
 
 /**
  * Determines if the navigation bar should be shown based on the current destination.
