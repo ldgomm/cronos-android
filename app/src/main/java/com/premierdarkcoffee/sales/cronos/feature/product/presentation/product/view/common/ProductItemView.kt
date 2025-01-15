@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,35 +26,48 @@ import com.google.gson.Gson
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
 
 @Composable
-fun ProductItemView(product: Product, onNavigateToProductView: (String) -> Unit) {
-    ElevatedCard(onClick = { onNavigateToProductView(Gson().toJson(product)) },
-                 modifier = Modifier
-                     .fillMaxWidth()
-                     .padding(vertical = 8.dp, horizontal = 16.dp),
-                 shape = RoundedCornerShape(16.dp),
-                 elevation = CardDefaults.elevatedCardElevation(8.dp)) {
-        Row(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(model = product.image.url,
-                       contentDescription = product.name,
-                       modifier = Modifier
-                           .size(64.dp)
-                           .clip(RoundedCornerShape(8.dp))
-                           .background(MaterialTheme.colorScheme.surfaceVariant),
-                       contentScale = ContentScale.Crop)
+fun ProductItemView(
+    product: Product,
+    onNavigateToProductView: (String) -> Unit
+) {
+    ElevatedCard(
+        onClick = { onNavigateToProductView(Gson().toJson(product)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.elevatedCardElevation(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = product.image.url,
+                contentDescription = product.name,
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentScale = ContentScale.Crop
+            )
             Spacer(modifier = Modifier.width(16.dp))
             Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1f)) {
-                Text(text = product.name,
-                     style = MaterialTheme.typography.titleMedium,
-                     fontWeight = FontWeight.Bold,
-                     color = MaterialTheme.colorScheme.onSurface,
-                     modifier = Modifier.padding(bottom = 4.dp))
-                Text(product.model,
-                     style = MaterialTheme.typography.bodyMedium,
-                     fontWeight = FontWeight.Light,
-                     color = MaterialTheme.colorScheme.onSurface,
-                     modifier = Modifier.padding(bottom = 4.dp))
+                Text(
+                    text = product.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Text(
+                    product.model,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
             }
         }
     }

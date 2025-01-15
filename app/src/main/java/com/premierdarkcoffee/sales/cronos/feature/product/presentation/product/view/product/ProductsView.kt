@@ -42,7 +42,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.premierdarkcoffee.sales.cronos.R
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.ProductsState
-import com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common.ProductCardView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.ProductCardView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

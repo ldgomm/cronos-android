@@ -101,7 +101,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Sub
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
-import com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common.InformationListView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.four
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.six

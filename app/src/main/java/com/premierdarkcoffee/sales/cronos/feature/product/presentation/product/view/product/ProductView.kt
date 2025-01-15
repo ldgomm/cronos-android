@@ -46,7 +46,7 @@ import coil.compose.AsyncImage
 import com.google.gson.Gson
 import com.premierdarkcoffee.sales.cronos.R
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
-import com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common.SectionView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.SectionView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

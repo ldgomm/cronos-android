@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.sales.feature.product.presentation.product.view.common
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common
 
 //
 //  ProductCardView.kt
@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -55,20 +57,25 @@ fun ProductCardView(
         onClick = { onNavigateToProductView(Gson().toJson(product)) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .semantics {
+                contentDescription = "Product card for ${product.name}. Tap to view details."
+            },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .semantics(mergeDescendants = true) {}, // Group content as a single unit
+            verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 model = product.image.url,
-                contentDescription = product.name,
+                contentDescription = "Image of ${product.name}",
                 modifier = Modifier
-                    .size(72.dp) // Increased size for larger image
+                    .size(72.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentScale = ContentScale.Crop
@@ -90,7 +97,7 @@ fun ProductCardView(
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
                             .padding(bottom = 4.dp)
-                            .padding(end = 4.dp)
+                            .semantics { contentDescription = "Label: $it" }
                     )
                 }
                 Text(
@@ -99,13 +106,17 @@ fun ProductCardView(
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(end = 4.dp)
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .semantics { contentDescription = "Description: ${product.description}" }
                 )
                 Text(
                     text = product.date.formatDate(),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .semantics { contentDescription = "Date: ${product.date.formatDate()}" }
                 )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -119,6 +130,7 @@ fun ProductCardView(
                             .clip(RoundedCornerShape(4.dp))
                             .background(Color.Red.copy(alpha = 0.7f))
                             .padding(horizontal = 4.dp, vertical = 2.dp)
+                            .semantics { contentDescription = "${product.price.offer.discount} percent off" }
                     )
                 }
                 Text(
@@ -126,13 +138,17 @@ fun ProductCardView(
                     style = TextStyle(fontSize = 11.sp),
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .semantics { contentDescription = "Price: ${numberFormat.format(product.price.amount)}" }
                 )
                 Text(
                     text = numberFormat.format(originalPrice),
                     style = TextStyle(fontSize = 8.sp).copy(textDecoration = TextDecoration.LineThrough),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier
+                        .padding(top = 2.dp)
+                        .semantics { contentDescription = "Original price: ${numberFormat.format(originalPrice)}" }
                 )
             }
         }
