@@ -1,5 +1,6 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product
 
+import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.Codes
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
 
 data class Product(val id: String,
@@ -17,6 +18,7 @@ data class Product(val id: String,
                    val date: Long,
                    var overview: List<Information>,
                    val keywords: List<String>? = null,
+                   val codes: Codes? = null,
                    val specifications: Specifications? = null,
                    val warranty: String? = null,
                    val legal: String? = null,
@@ -39,6 +41,7 @@ data class Product(val id: String,
                           date = date,
                           overview = overview.map { it.toInformationDto() },
                           keywords = keywords,
+                          codes = codes?.toCodesDto(),
                           specifications = specifications?.toSpecificationsDto(),
                           warranty = warranty,
                           legal = legal,

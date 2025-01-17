@@ -19,6 +19,7 @@ data class ProductDto(val id: String,
                       val date: Long,
                       val overview: List<InformationDto>,
                       val keywords: List<String>? = null,
+                      val codes: CodesDto? = null,
                       val specifications: SpecificationsDto? = null,
                       val warranty: String? = null,
                       val legal: String? = null,
@@ -41,10 +42,27 @@ data class ProductDto(val id: String,
                        date = date,
                        overview = overview.map { it.toInformation() },
                        keywords = keywords,
+                       codes = codes?.toCodes(),
                        specifications = specifications?.toSpecifications(),
                        warranty = warranty,
                        legal = legal,
                        warning = warning,
                        storeId = storeId)
+    }
+}
+
+
+@Serializable
+data class CodesDto(val EAN: String) {
+
+    fun toCodes(): Codes {
+        return Codes(EAN)
+    }
+}
+
+data class Codes(val EAN: String) {
+
+    fun toCodesDto(): CodesDto {
+        return CodesDto(EAN)
     }
 }
