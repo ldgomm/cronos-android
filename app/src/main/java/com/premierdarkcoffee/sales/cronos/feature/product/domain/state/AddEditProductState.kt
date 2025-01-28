@@ -1,5 +1,6 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.state
 
+import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.Codes
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
@@ -14,7 +15,7 @@ data class AddEditProductState(val id: String = UUID.randomUUID().toString(),
                                val name: String = "",
                                val label: String = "",
                                val owner: String = "",
-                               val year: String = "2024",
+                               val year: String = "2025",
                                val model: String = "N/A",
                                val description: String = "",
                                val category: Category = Category("", "", ""),
@@ -27,9 +28,8 @@ data class AddEditProductState(val id: String = UUID.randomUUID().toString(),
                                var image: Image = Image(path = null, url = "", belongs = false),
                                val origin: String = "",
                                val date: Long = System.currentTimeMillis(),
-//    var overview: MutableList<Information> = mutableListOf(),
-//    val overviewResult: MutableList<InformationResultState> = mutableListOf(),
                                val keywords: MutableList<String> = mutableListOf(),
+                               val codes: Codes = Codes(EAN = ""),
                                val specifications: Specifications? = null,
                                val warranty: String? = null,
                                val legal: String? = null,
@@ -54,6 +54,7 @@ data class AddEditProductState(val id: String = UUID.randomUUID().toString(),
                            date = System.currentTimeMillis(),
                            overview = overview,
                            keywords = keywords,
+                           codes = codes,
                            specifications = specifications,
                            warranty = warranty,
                            legal = legal,

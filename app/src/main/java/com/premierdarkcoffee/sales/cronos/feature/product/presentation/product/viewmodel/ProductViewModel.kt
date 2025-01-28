@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.Codes
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
@@ -208,13 +209,6 @@ class ProductViewModel @Inject constructor(application: Application,
             setImage(product.image)
             setOrigin(product.origin)
             setDate(product.date)
-//            setOverview(product.overview)
-            product.keywords?.let { setKeywords(it) }
-            setSpecifications(product.specifications)
-            setWarranty(product.warranty)
-            setLegal(product.legal)
-            setWarning(product.warning)
-
             product.overview.forEach { result ->
                 result.image.path?.let { path ->
                     val informationResult = InformationResultState(id = result.id,
@@ -228,6 +222,12 @@ class ProductViewModel @Inject constructor(application: Application,
                     addInformationResultState(informationResult)
                 }
             }
+            product.keywords?.let { setKeywords(it) }
+            product.codes?.let { setCodes(it) }
+            setSpecifications(product.specifications)
+            setWarranty(product.warranty)
+            setLegal(product.legal)
+            setWarning(product.warning)
         }
     }
 
@@ -415,6 +415,10 @@ class ProductViewModel @Inject constructor(application: Application,
      */
     private fun setKeywords(keywords: List<String>) {
         _addEditProductState.value = _addEditProductState.value.copy(keywords = keywords.toMutableList())
+    }
+
+    private fun setCodes(codes: Codes) {
+        _addEditProductState.value = _addEditProductState.value.copy(codes = codes)
     }
 
     fun addKeyword(keyword: String) {
