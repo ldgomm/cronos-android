@@ -88,6 +88,7 @@ import com.premierdarkcoffee.sales.cronos.R.string.stock_label
 import com.premierdarkcoffee.sales.cronos.R.string.subcategory_label
 import com.premierdarkcoffee.sales.cronos.R.string.update_product_label
 import com.premierdarkcoffee.sales.cronos.R.string.warning_information_label
+import com.premierdarkcoffee.sales.cronos.R.string.warranty_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.year_label
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
@@ -131,6 +132,7 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
                        addInformationResultState: (InformationResultState) -> Unit,
                        addKeyword: (String) -> Unit,
                        deleteKeyword: (Int) -> Unit,
+                       setWarranty: (String?) -> Unit,
                        setLegal: (String?) -> Unit,
                        setWarning: (String?) -> Unit,
                        addProduct: (Product) -> Unit,
@@ -470,6 +472,7 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
             InformationListView(informationResultStateList)
 
 // Legal
+            TextFieldCard(stringResource(id = warranty_information_label), addEditProductState.warranty.orEmpty(), setWarranty)
             TextFieldCard(stringResource(id = legal_information_label), addEditProductState.legal.orEmpty(), setLegal)
 
 // Warning
