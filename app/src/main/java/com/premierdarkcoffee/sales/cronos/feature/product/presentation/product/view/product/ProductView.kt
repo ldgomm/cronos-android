@@ -212,11 +212,10 @@ fun ProductView(product: Product,
             }
 
             product.warranty?.let { warranty ->
-                SectionView(title = stringResource(id = R.string.warranty_label)) {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-                        ProductDetailRow(label = stringResource(id = R.string.warranty_duration_label, warranty.months),
-                                         value = warranty.details.joinToString(", "))
-                    }
+                SectionView(title = stringResource(id = R.string.warranty_information_label)) {
+                    Text(text = warranty,
+                         style = MaterialTheme.typography.bodySmall,
+                         color = MaterialTheme.colorScheme.onSecondaryContainer)
                 }
             }
 
