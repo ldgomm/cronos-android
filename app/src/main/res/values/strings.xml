@@ -13,6 +13,7 @@
 <string name="enter_price_label">Enter price</string>
 <string name="stock_label">Stock</string>
 <string name="add_information_label">Add information</string>
+<string name="warranty_information_label">Warranty Information</string>
 <string name="legal_information_label">Legal Information</string>
 <string name="warning_information_label">Warning Information</string>
 <string name="update_product_label">Update product</string>

@@ -10,7 +10,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.I
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Group
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
@@ -446,7 +445,7 @@ class ProductViewModel @Inject constructor(application: Application,
      *
      * @param warranty The product warranty information, if any.
      */
-    private fun setWarranty(warranty: Warranty?) {
+    fun setWarranty(warranty: String?) {
         _addEditProductState.value = _addEditProductState.value.copy(warranty = warranty)
     }
 
