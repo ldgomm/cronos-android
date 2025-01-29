@@ -8,7 +8,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.O
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Product
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Specifications
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Warranty
 import java.util.UUID
 
 data class AddEditProductState(val id: String = UUID.randomUUID().toString(),
@@ -32,7 +31,7 @@ data class AddEditProductState(val id: String = UUID.randomUUID().toString(),
 //    val overviewResult: MutableList<InformationResultState> = mutableListOf(),
                                val keywords: MutableList<String> = mutableListOf(),
                                val specifications: Specifications? = null,
-                               val warranty: Warranty? = null,
+                               val warranty: String? = null,
                                val legal: String? = null,
                                val warning: String? = null,
                                val storeId: String? = null) {

@@ -67,6 +67,7 @@ fun NavGraphBuilder.addEditProductRoute(navController: NavHostController, onBack
                            deleteKeyword = viewModel::deleteKeyword,
                 //specifications
                 //warranty
+                           setWarranty = viewModel::setWarranty,
                            setLegal = viewModel::setLegal,
                            setWarning = viewModel::setWarning,
                            addProduct = { product ->
