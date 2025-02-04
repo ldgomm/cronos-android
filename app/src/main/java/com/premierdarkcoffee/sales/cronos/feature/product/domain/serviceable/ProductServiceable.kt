@@ -1,7 +1,7 @@
 package com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable
 
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
-import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import com.premierdarkcoffee.sales.sales.util.constant.Categories
 import kotlinx.coroutines.flow.Flow

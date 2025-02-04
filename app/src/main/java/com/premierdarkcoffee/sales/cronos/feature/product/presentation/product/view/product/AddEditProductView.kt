@@ -100,8 +100,8 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Gro
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Subclass
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
-import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
+import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.four
 import com.premierdarkcoffee.sales.sales.util.constant.Constant.six
@@ -113,30 +113,28 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditProductView(
-    addEditProductState: AddEditProductState,
-    product: Product?,
-    setName: (String) -> Unit,
-    setLabel: (String) -> Unit,
-    setOwner: (String) -> Unit,
-    setYear: (String) -> Unit,
-    setModel: (String) -> Unit,
-    setDescription: (String) -> Unit,
-    groups: List<Group>,
-    setCategory: (Category) -> Unit,
-    setPrice: (Price) -> Unit,
-    setStock: (Int) -> Unit,
-    setImage: (Image) -> Unit,
-    setOrigin: (String) -> Unit,
-    informationResultStateList: List<InformationResultState>,
-    addInformationResultState: (InformationResultState) -> Unit,
-    addKeyword: (String) -> Unit,
-    deleteKeyword: (Int) -> Unit,
-    setLegal: (String?) -> Unit,
-    setWarning: (String?) -> Unit,
-    addProduct: (Product) -> Unit,
-    updateProduct: (Product) -> Unit
-) {
+fun AddEditProductView(addEditProductState: AddEditProductState,
+                       product: Product?,
+                       setName: (String) -> Unit,
+                       setLabel: (String) -> Unit,
+                       setOwner: (String) -> Unit,
+                       setYear: (String) -> Unit,
+                       setModel: (String) -> Unit,
+                       setDescription: (String) -> Unit,
+                       groups: List<Group>,
+                       setCategory: (Category) -> Unit,
+                       setPrice: (Price) -> Unit,
+                       setStock: (Int) -> Unit,
+                       setImage: (Image) -> Unit,
+                       setOrigin: (String) -> Unit,
+                       informationResultStateList: List<InformationResultState>,
+                       addInformationResultState: (InformationResultState) -> Unit,
+                       addKeyword: (String) -> Unit,
+                       deleteKeyword: (Int) -> Unit,
+                       setLegal: (String?) -> Unit,
+                       setWarning: (String?) -> Unit,
+                       addProduct: (Product) -> Unit,
+                       updateProduct: (Product) -> Unit) {
 
     val context = LocalContext.current
     var mainImageHasChanged by remember { mutableStateOf(false) }
@@ -189,15 +187,13 @@ fun AddEditProductView(
         .statusBarsPadding()
         .navigationBarsPadding(),
              topBar = { TopBar(addEditProductState.name) }) { paddingValues ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollBehavior)
-                .padding(top = paddingValues.calculateTopPadding())
-                .padding(horizontal = paddingValues.calculateLeftPadding(LayoutDirection.Ltr))
-                .padding(horizontal = paddingValues.calculateLeftPadding(LayoutDirection.Rtl))
-                .padding(bottom = paddingValues.calculateBottomPadding())
-        ) {
+        Column(Modifier
+                   .fillMaxSize()
+                   .verticalScroll(scrollBehavior)
+                   .padding(top = paddingValues.calculateTopPadding())
+                   .padding(horizontal = paddingValues.calculateLeftPadding(LayoutDirection.Ltr))
+                   .padding(horizontal = paddingValues.calculateLeftPadding(LayoutDirection.Rtl))
+                   .padding(bottom = paddingValues.calculateBottomPadding())) {
             ImageCard(product?.image?.url, selectedImageUri) {
                 photoPickerLauncher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
             }
@@ -206,38 +202,26 @@ fun AddEditProductView(
             TextFieldCard(stringResource(id = label_label), addEditProductState.label, setLabel)
             TextFieldCard(stringResource(id = owner_label), addEditProductState.owner, setOwner)
 
-            TextFieldCard(
-                stringResource(id = year_label), addEditProductState.year, setYear
-            )
+            TextFieldCard(stringResource(id = year_label), addEditProductState.year, setYear)
 
-            TextFieldCard(
-                stringResource(id = model_label), addEditProductState.model, setModel
-            )
+            TextFieldCard(stringResource(id = model_label), addEditProductState.model, setModel)
 
-            TextFieldCard(
-                stringResource(id = description_label), addEditProductState.description, setDescription
-            )
+            TextFieldCard(stringResource(id = description_label), addEditProductState.description, setDescription)
 
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
+            ElevatedCard(elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
+                Row(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .padding(top = 10.dp),
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                    verticalAlignment = Alignment.CenterVertically) {
                     Text(text = stringResource(id = origin_label))
                     Text(text = origin)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.TopStart)
-                    ) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopStart)) {
                         IconButton(onClick = { isOriginExpanded = true }) {
                             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
                         }
@@ -257,27 +241,21 @@ fun AddEditProductView(
             }
 
             // Category UI
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
+            ElevatedCard(elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
                 // Row for Group
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .padding(top = 10.dp),
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                    verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(group_label))
                     Text(text = group.name)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.TopStart)
-                    ) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopStart)) {
                         IconButton(onClick = { areGroupsExpanded = true }) {
                             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
                         }
@@ -298,21 +276,17 @@ fun AddEditProductView(
                 }
 
                 // Row for Domain
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .padding(top = 10.dp),
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                    verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(category_label))
                     Text(text = domain.name)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.TopStart)
-                    ) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopStart)) {
                         IconButton(onClick = { areDomainsExpanded = true }) {
                             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
                         }
@@ -332,21 +306,17 @@ fun AddEditProductView(
                 }
 
                 // Row for Subclass
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                        .padding(top = 10.dp),
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                    verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(subcategory_label))
                     Text(text = subclass.name)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.TopStart)
-                    ) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopStart)) {
                         IconButton(onClick = { areSubclassesExpanded = true }) {
                             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
                         }
@@ -366,14 +336,12 @@ fun AddEditProductView(
             }
 
             // Price
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = six)
-                    .padding(horizontal = eleven),
-                shape = MaterialTheme.shapes.medium,
-                elevation = CardDefaults.elevatedCardElevation(four)
-            ) {
+            ElevatedCard(modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = six)
+                .padding(horizontal = eleven),
+                         shape = MaterialTheme.shapes.medium,
+                         elevation = CardDefaults.elevatedCardElevation(four)) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     // Amount TextField
                     TextField(value = amountText,
@@ -382,11 +350,9 @@ fun AddEditProductView(
                                   val parsedAmount = newValue.toDoubleOrNull()
                                   if (parsedAmount != null) {
                                       amount = parsedAmount
-                                      val value = Price(
-                                          amount = amount,
-                                          offer = Offer(isOfferActive, discount),
-                                          creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                                      )
+                                      val value = Price(amount = amount,
+                                                        offer = Offer(isOfferActive, discount),
+                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                                       Log.d(TAG, "AddEditProductView: Inside price $value")
                                       setPrice(value)
                                   }
@@ -402,11 +368,9 @@ fun AddEditProductView(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(checked = isOfferActive, onCheckedChange = { checked ->
                             isOfferActive = checked
-                            val value = Price(
-                                amount = amount,
-                                offer = Offer(isOfferActive, discount),
-                                creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                            )
+                            val value = Price(amount = amount,
+                                              offer = Offer(isOfferActive, discount),
+                                              creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                             setPrice(value)
                         })
                         Text(text = stringResource(id = offer_active_label))
@@ -418,11 +382,9 @@ fun AddEditProductView(
                                       val parsedDiscount = newValue.toIntOrNull()
                                       if (parsedDiscount != null) {
                                           discount = parsedDiscount
-                                          val value = Price(
-                                              amount = amount,
-                                              offer = Offer(isOfferActive, discount),
-                                              creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                                          )
+                                          val value = Price(amount = amount,
+                                                            offer = Offer(isOfferActive, discount),
+                                                            creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                                           setPrice(value)
                                       }
                                   },
@@ -441,11 +403,9 @@ fun AddEditProductView(
                                   val parsedValue = newValue.toIntOrNull()
                                   if (parsedValue != null) {
                                       withoutInterest = parsedValue
-                                      val value = Price(
-                                          amount = amount,
-                                          offer = Offer(isOfferActive, discount),
-                                          creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                                      )
+                                      val value = Price(amount = amount,
+                                                        offer = Offer(isOfferActive, discount),
+                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                                       setPrice(value)
                                   }
                               },
@@ -461,11 +421,9 @@ fun AddEditProductView(
                                   val parsedValue = newValue.toIntOrNull()
                                   if (parsedValue != null) {
                                       withInterest = parsedValue
-                                      val value = Price(
-                                          amount = amount,
-                                          offer = Offer(isOfferActive, discount),
-                                          creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                                      )
+                                      val value = Price(amount = amount,
+                                                        offer = Offer(isOfferActive, discount),
+                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                                       setPrice(value)
                                   }
                               },
@@ -481,11 +439,9 @@ fun AddEditProductView(
                                   val parsedValue = newValue.toIntOrNull()
                                   if (parsedValue != null) {
                                       freeMonths = parsedValue
-                                      val value = Price(
-                                          amount = amount,
-                                          offer = Offer(isOfferActive, discount),
-                                          creditCard = CreditCard(withoutInterest, withInterest, freeMonths)
-                                      )
+                                      val value = Price(amount = amount,
+                                                        offer = Offer(isOfferActive, discount),
+                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
                                       setPrice(value)
                                   }
                               },
@@ -498,18 +454,14 @@ fun AddEditProductView(
 
 
             // Stock
-            TextFieldCard(
-                stringResource(id = stock_label),
-                addEditProductState.stock.toString(),
-                { stock -> setStock(stock.toIntOrNull() ?: 0) },
-                KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+            TextFieldCard(stringResource(id = stock_label),
+                          addEditProductState.stock.toString(),
+                          { stock -> setStock(stock.toIntOrNull() ?: 0) },
+                          KeyboardOptions(keyboardType = KeyboardType.Number))
 
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
+            ElevatedCard(elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)) {
                 Button(onClick = { openBottomSheet = true }) {
                     Text(stringResource(id = add_information_label))
                 }
@@ -518,29 +470,23 @@ fun AddEditProductView(
             InformationListView(informationResultStateList)
 
 // Legal
-            TextFieldCard(
-                stringResource(id = legal_information_label), addEditProductState.legal.orEmpty(), setLegal
-            )
+            TextFieldCard(stringResource(id = legal_information_label), addEditProductState.legal.orEmpty(), setLegal)
 
 // Warning
-            TextFieldCard(
-                stringResource(id = warning_information_label), addEditProductState.warning.orEmpty(), setWarning
-            )
+            TextFieldCard(stringResource(id = warning_information_label), addEditProductState.warning.orEmpty(), setWarning)
 
             KeywordSection(addEditProductState, word, onWordChange = { word = it }, addKeyword, deleteKeyword)
 
-            SubmitButton(
-                mainImageHasChanged,
-                addEditProductState,
-                selectedImageUri,
-                context,
-                scope,
-                setImage,
-                informationResultStateList,
-                isUpdatingProduct,
-                addProduct,
-                updateProduct
-            )
+            SubmitButton(mainImageHasChanged,
+                         addEditProductState,
+                         selectedImageUri,
+                         context,
+                         scope,
+                         setImage,
+                         informationResultStateList,
+                         isUpdatingProduct,
+                         addProduct,
+                         updateProduct)
         }
     }
 
@@ -564,56 +510,44 @@ fun TopBar(title: String) {
 }
 
 @Composable
-fun ImageCard(
-    imageUrl: String?,
-    selectedImageUri: Uri?,
-    onClick: () -> Unit
-) {
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .padding(vertical = six)
-            .padding(horizontal = eleven),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.elevatedCardElevation(four)
-    ) {
+fun ImageCard(imageUrl: String?, selectedImageUri: Uri?, onClick: () -> Unit) {
+    ElevatedCard(modifier = Modifier
+        .fillMaxWidth()
+        .height(300.dp)
+        .padding(vertical = six)
+        .padding(horizontal = eleven),
+                 shape = MaterialTheme.shapes.medium,
+                 elevation = CardDefaults.elevatedCardElevation(four)) {
         imageUrl?.let {
-            AsyncImage(
-                model = selectedImageUri ?: imageUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .padding(16.dp)
-                    .clickable { onClick() },
-                contentScale = ContentScale.FillWidth
-            )
+            AsyncImage(model = selectedImageUri ?: imageUrl,
+                       contentDescription = null,
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .clip(MaterialTheme.shapes.medium)
+                           .padding(16.dp)
+                           .clickable { onClick() },
+                       contentScale = ContentScale.FillWidth)
         } ?: run {
-            AsyncImage(
-                model = selectedImageUri,
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .padding(16.dp)
-                    .clickable {
-                        onClick()
-                    },
-                contentScale = ContentScale.FillWidth
-            )
+            AsyncImage(model = selectedImageUri,
+                       contentDescription = "",
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .clip(MaterialTheme.shapes.medium)
+                           .padding(16.dp)
+                           .clickable {
+                               onClick()
+                           },
+                       contentScale = ContentScale.FillWidth)
         }
     }
 }
 
 @Composable
-fun TextFieldCard(
-    label: String,
-    text: String,
-    onTextChanged: (String) -> Unit,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    onClick: (() -> Unit)? = null
-) {
+fun TextFieldCard(label: String,
+                  text: String,
+                  onTextChanged: (String) -> Unit,
+                  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+                  onClick: (() -> Unit)? = null) {
 
     ElevatedCard(modifier = Modifier
         .clickable { onClick?.invoke() }
@@ -622,108 +556,99 @@ fun TextFieldCard(
         .padding(horizontal = eleven),
                  shape = MaterialTheme.shapes.medium,
                  elevation = CardDefaults.elevatedCardElevation(four)) {
-        TextField(
-            value = text,
-            onValueChange = onTextChanged,
-            label = { Text(label) },
-            keyboardOptions = keyboardOptions,
-            modifier = Modifier.fillMaxWidth()
-        )
+        TextField(value = text,
+                  onValueChange = onTextChanged,
+                  label = { Text(label) },
+                  keyboardOptions = keyboardOptions,
+                  modifier = Modifier.fillMaxWidth())
     }
 }
 
 @Composable
-fun SubmitButton(
-    mainImageHasChanged: Boolean,
-    addEditProductState: AddEditProductState,
-    selectedImageUri: Uri?,
-    context: Context,
-    scope: CoroutineScope,
-    setImage: (Image) -> Unit,
-    informationResultStateList: List<InformationResultState>,
-    isUpdatingProduct: Boolean,
-    addProduct: (Product) -> Unit,
-    updateProduct: (Product) -> Unit
-) {
+fun SubmitButton(mainImageHasChanged: Boolean,
+                 addEditProductState: AddEditProductState,
+                 selectedImageUri: Uri?,
+                 context: Context,
+                 scope: CoroutineScope,
+                 setImage: (Image) -> Unit,
+                 informationResultStateList: List<InformationResultState>,
+                 isUpdatingProduct: Boolean,
+                 addProduct: (Product) -> Unit,
+                 updateProduct: (Product) -> Unit) {
     var isProcessing by remember { mutableStateOf(false) }
 
-    Button(
-        onClick = {
-            if (isProcessing) return@Button
-            isProcessing = true
-            if (!mainImageHasChanged) {
-                scope.launch(Dispatchers.Main) {
-                    try {
-                        val product = addEditProductState.toProduct(
-                            addEditProductState.image,
-                            overview = informationResultStateList.map { it.toInformation() })
-                        if (isUpdatingProduct) {
-                            updateProduct(product)
-                        }
-                    } catch (e: Exception) {
-                        Log.d(TAG, "SubmitButton: Error")
-                    } finally {
-                        isProcessing = false
+    Button(onClick = {
+        if (isProcessing) return@Button
+        isProcessing = true
+        if (!mainImageHasChanged) {
+            scope.launch(Dispatchers.Main) {
+                try {
+                    val product = addEditProductState.toProduct(addEditProductState.image,
+                                                                overview = informationResultStateList.map { it.toInformation() })
+                    if (isUpdatingProduct) {
+                        updateProduct(product)
                     }
-                }
-            } else {
-                selectedImageUri?.let { uri ->
-                    uploadImageToFirebase(context, context.contentResolver, uri = uri, path = "main") { imageInfo ->
-                        val image = Image(path = imageInfo.path, url = imageInfo.url, belongs = false)
-
-                        addEditProductState.image.path?.let { oldPath ->
-                            scope.launch(Dispatchers.Main) {
-                                try {
-                                    setImage(image)
-                                    delay(1000)
-                                    val product = addEditProductState.toProduct(
-                                        image,
-                                        overview = informationResultStateList.map { it.toInformation() })
-                                    if (isUpdatingProduct) {
-                                        updateProduct(product)
-                                        if (oldPath.isNotEmpty()) {
-                                            FirebaseStorage.getInstance().reference.child(oldPath).delete().addOnSuccessListener {
-                                                Log.d(TAG, "updateProduct: Image deleted")
-                                            }
-                                        }
-                                    }
-                                } catch (e: Exception) {
-                                    Log.d(TAG, "SubmitButton: Error")
-                                } finally {
-                                    isProcessing = false
-                                }
-                            }
-                        } ?: run {
-                            scope.launch(Dispatchers.Main) {
-                                try {
-                                    setImage(image)
-                                    val product: Product = addEditProductState.toProduct(image = image,
-                                                                                         overview = informationResultStateList.map { it.toInformation() })
-                                    if (!isUpdatingProduct) {
-                                        addProduct(product)
-                                    }
-                                } catch (e: Exception) {
-                                    Log.d(TAG, "SubmitButton: Error")
-                                } finally {
-                                    isProcessing = false // Reset the processing state
-                                }
-                            }
-                        }
-                    }
-                } ?: run {
-                    isProcessing = false // Reset if no URI is selected
+                } catch (e: Exception) {
+                    Log.d(TAG, "SubmitButton: Error")
+                } finally {
+                    isProcessing = false
                 }
             }
-        }, enabled = !isProcessing // Disable the button when processing
+        } else {
+            selectedImageUri?.let { uri ->
+                uploadImageToFirebase(context, context.contentResolver, uri = uri, path = "main") { imageInfo ->
+                    val image = Image(path = imageInfo.path, url = imageInfo.url, belongs = false)
+
+                    addEditProductState.image.path?.let { oldPath ->
+                        scope.launch(Dispatchers.Main) {
+                            try {
+                                setImage(image)
+                                delay(1000)
+                                val product = addEditProductState.toProduct(image,
+                                                                            overview = informationResultStateList.map { it.toInformation() })
+                                if (isUpdatingProduct) {
+                                    updateProduct(product)
+                                    if (oldPath.isNotEmpty()) {
+                                        FirebaseStorage.getInstance().reference.child(oldPath).delete().addOnSuccessListener {
+                                            Log.d(TAG, "updateProduct: Image deleted")
+                                        }
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                Log.d(TAG, "SubmitButton: Error")
+                            } finally {
+                                isProcessing = false
+                            }
+                        }
+                    } ?: run {
+                        scope.launch(Dispatchers.Main) {
+                            try {
+                                setImage(image)
+                                val product: Product = addEditProductState.toProduct(image = image,
+                                                                                     overview = informationResultStateList.map { it.toInformation() })
+                                if (!isUpdatingProduct) {
+                                    addProduct(product)
+                                }
+                            } catch (e: Exception) {
+                                Log.d(TAG, "SubmitButton: Error")
+                            } finally {
+                                isProcessing = false // Reset the processing state
+                            }
+                        }
+                    }
+                }
+            } ?: run {
+                isProcessing = false // Reset if no URI is selected
+            }
+        }
+    }, enabled = !isProcessing // Disable the button when processing
     ) {
         if (!isProcessing) {
-            Text(
-                text = if (isUpdatingProduct) {
-                    stringResource(id = update_product_label)
-                } else {
-                    stringResource(id = create_product_label)
-                }
-            )
+            Text(text = if (isUpdatingProduct) {
+                stringResource(id = update_product_label)
+            } else {
+                stringResource(id = create_product_label)
+            })
         } else {
             Text("Por favor espere")
         }
@@ -731,34 +656,26 @@ fun SubmitButton(
 }
 
 @Composable
-fun KeywordSection(
-    addEditProductState: AddEditProductState,
-    word: String,
-    onWordChange: (String) -> Unit,
-    addKeyword: (String) -> Unit,
-    deleteKeyword: (Int) -> Unit
-) {
+fun KeywordSection(addEditProductState: AddEditProductState,
+                   word: String,
+                   onWordChange: (String) -> Unit,
+                   addKeyword: (String) -> Unit,
+                   deleteKeyword: (Int) -> Unit) {
     Column {
         // Header
-        Text(
-            text = stringResource(id = R.string.keywords_label),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+        Text(text = stringResource(id = R.string.keywords_label),
+             style = MaterialTheme.typography.titleMedium,
+             modifier = Modifier.padding(bottom = 8.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        ) {
-            TextField(
-                value = word,
-                onValueChange = onWordChange,
-                label = { Text(stringResource(id = R.string.enter_main_words)) },
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp)
-            )
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)) {
+            TextField(value = word,
+                      onValueChange = onWordChange,
+                      label = { Text(stringResource(id = R.string.enter_main_words)) },
+                      modifier = Modifier
+                          .weight(1f)
+                          .padding(end = 8.dp))
 
             Button(onClick = {
                 addKeyword(word)
@@ -778,10 +695,8 @@ fun KeywordSection(
         }
 
         // Footer
-        Text(
-            text = stringResource(id = R.string.add_main_words_footer),
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.padding(top = 8.dp)
-        )
+        Text(text = stringResource(id = R.string.add_main_words_footer),
+             style = MaterialTheme.typography.labelSmall,
+             modifier = Modifier.padding(top = 8.dp))
     }
 }

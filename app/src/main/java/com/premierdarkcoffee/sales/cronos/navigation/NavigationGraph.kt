@@ -9,10 +9,7 @@ import com.premierdarkcoffee.sales.cronos.navigation.route.settings.settingsRout
 import com.premierdarkcoffee.sales.cronos.navigation.route.settings.termsOfUseRoute
 
 @Composable
-fun NavigationGraph(
-    navController: NavHostController,
-    startDestination: Any
-) {
+fun NavigationGraph(navController: NavHostController, startDestination: Any) {
 
     NavHost(navController = navController, startDestination = startDestination) {
 
@@ -42,9 +39,9 @@ fun NavigationGraph(
         })
 
         settingsRoute(
-            onNavigateToPrivacyPolicyButtonClicked = { navController.navigate(PrivacyPolicyRoute) },
-            onNavigateToTermsOfUseButtonClicked = { navController.navigate(TermsOfUseRoute) },
-            onNavigateToAccountDeletionButtonClicked = { navController.navigate(AccountDeletionRoute) },
+                onNavigateToPrivacyPolicyButtonClicked = { navController.navigate(PrivacyPolicyRoute) },
+                onNavigateToTermsOfUseButtonClicked = { navController.navigate(TermsOfUseRoute) },
+                onNavigateToAccountDeletionButtonClicked = { navController.navigate(AccountDeletionRoute) },
         )
 
         accountDeletionRoute()

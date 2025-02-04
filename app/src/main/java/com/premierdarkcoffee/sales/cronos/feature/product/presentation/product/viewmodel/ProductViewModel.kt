@@ -22,7 +22,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetProd
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.UpdateProductUseCase
 import com.premierdarkcoffee.sales.cronos.util.function.getUrlFor
 import com.premierdarkcoffee.sales.cronos.util.key.getCronosKey
-import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -269,7 +269,7 @@ class ProductViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 addEditedProductUseCase(
-                    getUrlFor(endpoint = "cronos-products"), PostProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
+                        getUrlFor(endpoint = "cronos-products"), PostProductRequest(key = cronosKey, product = product.toProductDto()), apiKey
                 ).collect { result ->
                     result.onSuccess {
                         withContext(Dispatchers.Main) {

@@ -7,9 +7,7 @@ interface DataServiceable {
 
     fun addGroup(url: String, request: Group): Flow<Result<Group>>
 
-    fun getGroups(
-        url: String,
-    ): Flow<Result<List<Group>>>
+    fun getGroups(url: String): Flow<Result<List<Group>>>
 }
 
 @Serializable

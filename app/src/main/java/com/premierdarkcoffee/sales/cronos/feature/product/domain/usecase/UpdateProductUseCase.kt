@@ -8,11 +8,7 @@ import javax.inject.Inject
 
 class UpdateProductUseCase @Inject constructor(private val productServiceable: ProductServiceable) {
 
-    operator fun invoke(
-        url: String,
-        request: PutProductRequest,
-        apiKey: String
-    ): Flow<Result<MessageResponse>> {
+    operator fun invoke(url: String, request: PutProductRequest, apiKey: String): Flow<Result<MessageResponse>> {
         return productServiceable.updateProduct(url, request, apiKey)
     }
 }

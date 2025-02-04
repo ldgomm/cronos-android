@@ -23,29 +23,21 @@ import com.premierdarkcoffee.sales.cronos.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsView(
-    onNavigateToPrivacyPolicyButtonClicked: () -> Unit,
-    onNavigateToTermsOfUseButtonClicked: () -> Unit,
-    onNavigateToAccountDeletionButtonClicked: () -> Unit
-) {
+fun SettingsView(onNavigateToPrivacyPolicyButtonClicked: () -> Unit,
+                 onNavigateToTermsOfUseButtonClicked: () -> Unit,
+                 onNavigateToAccountDeletionButtonClicked: () -> Unit) {
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = stringResource(id = R.string.settings_title)) })
     }) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-        ) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(16.dp)) {
             // Section 1: Privacy Policy and Terms and Conditions
-            SettingsSection(
-                title = stringResource(id = R.string.general_title),
-                items = listOf(
-                    stringResource(id = R.string.privacy_policy) to onNavigateToPrivacyPolicyButtonClicked,
-                    stringResource(id = R.string.terms_of_use) to onNavigateToTermsOfUseButtonClicked,
-                    stringResource(id = R.string.account_deletion) to onNavigateToAccountDeletionButtonClicked
-                )
-            )
+            SettingsSection(title = stringResource(id = R.string.general_title),
+                            items = listOf(stringResource(id = R.string.privacy_policy) to onNavigateToPrivacyPolicyButtonClicked,
+                                           stringResource(id = R.string.terms_of_use) to onNavigateToTermsOfUseButtonClicked,
+                                           stringResource(id = R.string.account_deletion) to onNavigateToAccountDeletionButtonClicked))
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -54,26 +46,16 @@ fun SettingsView(
 }
 
 @Composable
-fun SettingsSection(
-    title: String,
-    items: List<Pair<String, () -> Unit>>,
-    buttonColors: ButtonColors = ButtonDefaults.buttonColors()
-) {
-    Text(
-        text = title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp)
-    )
+fun SettingsSection(title: String,
+                    items: List<Pair<String, () -> Unit>>,
+                    buttonColors: ButtonColors = ButtonDefaults.buttonColors()) {
+    Text(text = title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
 
     items.forEach { (label, action) ->
-        Button(
-            onClick = action, colors = buttonColors, modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp)
-        ) {
-            Text(
-                label,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
+        Button(onClick = action, colors = buttonColors, modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)) {
+            Text(label, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
         }
     }
 }

@@ -5,7 +5,7 @@ import android.util.Log
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.MessageResponse
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.ProductServiceable
-import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PostProductRequest
+import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.request.PostProductRequest
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
 import com.premierdarkcoffee.sales.sales.util.constant.Categories
 import io.ktor.client.HttpClient
