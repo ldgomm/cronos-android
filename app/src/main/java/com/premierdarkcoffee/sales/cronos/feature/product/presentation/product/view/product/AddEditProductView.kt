@@ -45,7 +45,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -102,11 +101,11 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Sub
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
-import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.four
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.six
 import com.premierdarkcoffee.sales.cronos.util.constant.paises
+import com.premierdarkcoffee.sales.cronos.util.function.uploadImageToFirebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -180,9 +179,9 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
     val skipPartiallyExpanded by rememberSaveable { mutableStateOf(true) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
 
-    LaunchedEffect(Unit) {
-        Log.d(TAG, "AddEditProductView: Price: ${addEditProductState.price}")
-    }
+//    LaunchedEffect(Unit) {
+//        Log.d(TAG, "AddEditProductView: Price: ${addEditProductState.price}")
+//    }
 
     Scaffold(modifier = Modifier
         .background(MaterialTheme.colorScheme.surface)
@@ -355,7 +354,7 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
                                       val value = Price(amount = amount,
                                                         offer = Offer(isOfferActive, discount),
                                                         creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                                      Log.d(TAG, "AddEditProductView: Inside price $value")
+//                                      Log.d(TAG, "AddEditProductView: Inside price $value")
                                       setPrice(value)
                                   }
                               },
@@ -496,7 +495,7 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
     if (openBottomSheet) {
         ModalBottomSheet(onDismissRequest = { openBottomSheet = false }, sheetState = bottomSheetState) {
             AddEditInformationView(onAddInformationResultStateButtonClick = {
-                Log.d(TAG, "AddEditProductView >> InformationResultState: $it")
+//                Log.d(TAG, "AddEditProductView >> InformationResultState: $it")
                 addInformationResultState(it)
                 openBottomSheet = false
             })
