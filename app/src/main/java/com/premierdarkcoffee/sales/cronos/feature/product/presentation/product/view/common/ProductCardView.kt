@@ -74,6 +74,7 @@ fun ProductCardView(product: Product, onNavigateToProductView: (String) -> Unit)
             Spacer(modifier = Modifier.width(16.dp))
             Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1f)) {
                 Text(text = product.name,
+                     maxLines = 1,
                      style = MaterialTheme.typography.titleMedium,
                      fontWeight = FontWeight.Bold,
                      color = MaterialTheme.colorScheme.onSurface,
