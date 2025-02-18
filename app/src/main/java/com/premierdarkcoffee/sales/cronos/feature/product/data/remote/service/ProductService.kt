@@ -7,7 +7,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.r
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.MessageResponse
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.ProductServiceable
 import com.premierdarkcoffee.sales.sales.feature.product.domain.model.product.request.PutProductRequest
-import com.premierdarkcoffee.sales.cronos.util.constant.Categories
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -41,18 +40,6 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
 //                    header(HttpHeaders.Authorization, "Bearer $apiKey")
                     header(HttpHeaders.Authorization, "Bearer 6Y-ft0-grCS4-CJLxBSj-MXktZaqEqjD")
                 }
-                emit(Result.success(response.body()))
-            } catch (e: Exception) {
-                Log.d(TAG, "ProductService | We have no products: ${e.message}")
-                emit(Result.failure(e))
-            }
-        }
-    }
-
-    override fun getCategories(endpoint: String): Flow<Result<Categories>> {
-        return flow {
-            try {
-                val response: HttpResponse = httpClient.get(endpoint)
                 emit(Result.success(response.body()))
             } catch (e: Exception) {
                 Log.d(TAG, "ProductService | We have no products: ${e.message}")
@@ -117,7 +104,7 @@ class ProductService @Inject constructor(private val httpClient: HttpClient) : P
                 when (response.status) {
                     Accepted -> {
                         val responseBody = response.body<MessageResponse>()
-                        Log.d(TAG, "AddEditProductService | Product added: $responseBody")
+                        Log.d(TAG, "AddEditProductService | Product updated: $responseBody")
                         emit(Result.success(responseBody))
                     }
 
