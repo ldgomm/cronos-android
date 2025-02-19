@@ -17,7 +17,6 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditPr
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.ProductsState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.AddProductUseCase
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetCategoriesUseCase
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetGroupsUseCase
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.GetProductsUseCase
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.usecase.UpdateProductUseCase
@@ -36,9 +35,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(application: Application,
-
                                            private val getProductsUseCase: GetProductsUseCase,
-                                           private val getCategoriesUseCase: GetCategoriesUseCase,
                                            private val addEditedProductUseCase: AddProductUseCase,
                                            private val updateProductUseCase: UpdateProductUseCase,
                                            private val getGroupsUseCase: GetGroupsUseCase) : AndroidViewModel(application) {
@@ -154,7 +151,7 @@ class ProductViewModel @Inject constructor(application: Application,
      * @param text The search text input, or null to fetch all products.
      */
     private fun executeProductSearch(text: String? = null, apiKey: String) {
-        val url = getUrlFor(endpoint = "cronos-amira-products", keywords = text)
+        val url = getUrlFor(endpoint = "cronos-brandoun-products", keywords = text)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getProductsUseCase(url, apiKey).collect { result ->
@@ -367,9 +364,7 @@ class ProductViewModel @Inject constructor(application: Application,
      * @param price The product price.
      */
     fun setPrice(price: Price) {
-        Log.d(TAG, "setPrice: $price")
         _addEditProductState.value = _addEditProductState.value.copy(price = price)
-        Log.d(TAG, "Price: ${addEditProductState.value.price}")
     }
 
     /**
