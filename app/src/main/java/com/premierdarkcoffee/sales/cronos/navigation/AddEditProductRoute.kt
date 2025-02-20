@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.google.gson.Gson
 import com.premierdarkcoffee.sales.cronos.feature.product.data.remote.dto.ProductDto
-import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.AddEditProductView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.AddEditProductView
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.viewmodel.ProductViewModel
 import com.premierdarkcoffee.sales.cronos.util.function.sharedViewModel
 import com.premierdarkcoffee.sales.cronos.util.helper.SecurePreferencesHelper
