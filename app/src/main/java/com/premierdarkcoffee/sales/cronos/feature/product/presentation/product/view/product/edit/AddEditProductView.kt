@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -101,6 +101,7 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Sub
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.components.KeywordBubble
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.four
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.six
