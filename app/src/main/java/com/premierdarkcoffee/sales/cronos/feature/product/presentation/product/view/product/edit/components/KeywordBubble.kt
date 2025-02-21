@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.components
 
 //
 //  KeywordBubble.kt
