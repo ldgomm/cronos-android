@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.component
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.components
 
 //
 //  Chip.kt
