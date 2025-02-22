@@ -1,4 +1,4 @@
-package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common
+package com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product
 
 //
 //  ProductCardView.kt
