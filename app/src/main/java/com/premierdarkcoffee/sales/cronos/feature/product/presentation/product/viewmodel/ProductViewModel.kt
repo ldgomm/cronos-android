@@ -47,6 +47,9 @@ class ProductViewModel @Inject constructor(application: Application,
     private val _productsState = MutableStateFlow(ProductsState())
     val productsState: StateFlow<ProductsState> = _productsState
 
+    // StateFlow to manage the list of products and their loading state
+    private var _allProductsState = MutableStateFlow(ProductsState())
+
     // StateFlow to manage the Product and its loading state
     private var _addEditProductState = MutableStateFlow(AddEditProductState())
     var addEditProductState: StateFlow<AddEditProductState> = _addEditProductState
@@ -109,24 +112,10 @@ class ProductViewModel @Inject constructor(application: Application,
             getProducts(apiKey)
         } else {
             // Perform the local search using regex
-            filterProductsLocally(text)
+            getProductByKeywords(text)
         }
     }
 
-    private fun filterProductsLocally(searchText: String) {
-        val regex = searchText.split("\\s+".toRegex()).joinToString("|") { Regex.escape(it) }.toRegex(RegexOption.IGNORE_CASE)
-
-        val filteredProducts = _productsState.value.products?.filter { product ->
-            listOfNotNull(product.name, product.label, product.owner, product.model, product.description).any { field ->
-                regex.containsMatchIn(field)
-            }
-        }
-
-        // Update the state with the filtered products
-        _productsState.update { state ->
-            state.copy(products = filteredProducts)
-        }
-    }
 
     /**
      * Fetches products from the store or all stores if no storeId is provided.
@@ -145,20 +134,27 @@ class ProductViewModel @Inject constructor(application: Application,
     }
 
     /**
-     * Executes the product search or fetch operation.
-     *
-     * @param storeId The ID of the store to fetch products from, or null for all stores.
-     * @param text The search text input, or null to fetch all products.
+     * Call this once you’ve fetched products from your API.
      */
-    private fun executeProductSearch(text: String? = null, apiKey: String) {
-        val url = getUrlFor(endpoint = "cronos-brandoun-products", keywords = text)
+    private fun executeProductSearch(apiKey: String) {
+        val url = getUrlFor(endpoint = "cronos-brandoun-products")
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getProductsUseCase(url, apiKey).collect { result ->
                     result.onSuccess { products ->
-                        _productsState.update { state ->
-                            state.copy(products = products.map { it.toProduct() }.sortedByDescending { it.date })
+                        // Map your domain objects to the Product model if needed
+                        val mappedAndSorted = products.map { it.toProduct() }.sortedByDescending { it.date }
+
+                        // 1) Store them in the "all" state
+                        _allProductsState.update { state ->
+                            state.copy(products = mappedAndSorted)
                         }
+
+                        // 2) Also make them the "current/filtered" list by default
+                        _productsState.update { state ->
+                            state.copy(products = mappedAndSorted)
+                        }
+
                     }.onFailure { exception ->
                         Log.e(TAG, "Error in product search: ${exception.message}")
                     }
@@ -166,6 +162,17 @@ class ProductViewModel @Inject constructor(application: Application,
             } catch (e: Exception) {
                 Log.e(TAG, "Exception in executeProductSearch: ${e.message}")
             }
+        }
+    }
+
+    /**
+     * Resets the current/filtered list back to the full list.
+     */
+    private fun restoreAllProducts() {
+        val allProducts = _allProductsState.value.products
+        _productsState.update { state ->
+            // If `allProducts` is null, fall back to emptyList()
+            state.copy(products = allProducts ?: emptyList())
         }
     }
 
@@ -184,6 +191,72 @@ class ProductViewModel @Inject constructor(application: Application,
     fun clearSearchText(apiKey: String) {
         _searchText.value = ""
         getProducts(apiKey) // Restore the original product list
+    }
+
+    /**
+     * Filters the product list using “digit check” logic:
+     *   - If the search starts with a digit => treat the entire string as one term.
+     *   - Otherwise => split by whitespace into multiple terms.
+     * Then a product must match **all** terms (name, label, owner, year, or model).
+     *
+     * Note: Model is always searched now (no more "Ferretería" check).
+     * Also, model is “space-normalized” so that strings like "0 601 5B3" can be matched.
+     */
+    private fun getProductByKeywords(searchText: String) {
+        val trimmed = searchText.trim()
+        if (trimmed.isEmpty()) {
+            restoreAllProducts()
+            return
+        }
+
+        // 1) Single term if it starts with a digit; otherwise split
+        val firstCharIsDigit = trimmed.firstOrNull()?.isDigit() ?: false
+        val terms = if (firstCharIsDigit) {
+            listOf(trimmed) // one term
+        } else {
+            trimmed.split("\\s+".toRegex()) // multiple terms
+        }
+
+        // 2) Filter from the full list
+        val fullList = _allProductsState.value.products ?: emptyList()
+        val filtered = fullList.filter { product ->
+            // A product must match *all* terms
+            terms.all { term -> productMatchesTerm(product, term) }
+        }
+
+        // 3) Publish the filtered list
+        _productsState.value = ProductsState(products = filtered)
+    }
+
+    /**
+     * Returns true if [product] matches [term] in:
+     *   - name, label, owner, year, OR
+     *   - model (with spaces removed),
+     * using case-insensitive matching.
+     */
+    private fun productMatchesTerm(product: Product, term: String): Boolean {
+        // We'll do a normal regex for the plain fields
+        val normalRegex = Regex(Regex.escape(term), RegexOption.IGNORE_CASE)
+
+        // Check name, label, owner, year “as is”
+        val basicFields = buildList {
+            add(product.name)
+            product.label?.let { add(it) }
+            product.owner?.let { add(it) }
+            product.year?.let { add(it) }
+        }
+
+        // If any basic field matches the term, we’re good
+        if (basicFields.any { field -> normalRegex.containsMatchIn(field) }) {
+            return true
+        }
+
+        // Otherwise, let's check the model with space normalization
+        val normalizedTerm = term.lowercase().replace(" ", "")
+        val normalizedModel = product.model.lowercase().replace(" ", "")
+        val modelRegex = Regex(Regex.escape(normalizedTerm), RegexOption.IGNORE_CASE)
+
+        return modelRegex.containsMatchIn(normalizedModel)
     }
 
     /**
@@ -225,79 +298,6 @@ class ProductViewModel @Inject constructor(application: Application,
             setWarranty(product.warranty)
             setLegal(product.legal)
             setWarning(product.warning)
-        }
-    }
-
-    /**
-     * Adds an information result to the list of information result states.
-     *
-     * @param informationResult The information result to add.
-     */
-    fun addInformationResultState(informationResult: InformationResultState) {
-        _informationResultStateList.value += informationResult
-    }
-
-    /**
-     * Adds a new product to the store.
-     *
-     * @param product The product to add.
-     * @param onSuccess A callback invoked upon successful addition.
-     * @param onFailure A callback invoked when the addition fails.
-     */
-    fun addProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                addEditedProductUseCase(getUrlFor(endpoint = "cronos-products"),
-                                        PostProductRequest(key = cronosKey, product = product.toProductDto()),
-                                        apiKey).collect { result ->
-                    result.onSuccess {
-                        withContext(Dispatchers.Main) {
-                            onSuccess()
-                        }
-                    }.onFailure {
-                        withContext(Dispatchers.Main) {
-                            onFailure()
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    onFailure()
-                }
-            }
-        }
-    }
-
-    /**
-     * Updates an existing product in the store.
-     *
-     * @param product The product to update.
-     * @param onSuccess A callback invoked upon successful update.
-     * @param onFailure A callback invoked when the update fails.
-     */
-    fun updateProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                updateProductUseCase(getUrlFor(endpoint = "cronos-products"),
-                                     PutProductRequest(key = cronosKey, product = product.toProductDto()),
-                                     apiKey).collect { result ->
-                    result.onSuccess {
-                        withContext(Dispatchers.Main) {
-                            Log.d(TAG, "updateProduct: Product updated")
-                            onSuccess()
-                        }
-                    }.onFailure {
-                        withContext(Dispatchers.Main) {
-                            onFailure()
-                        }
-                    }
-                }
-
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    onFailure()
-                }
-            }
         }
     }
 
@@ -466,4 +466,76 @@ class ProductViewModel @Inject constructor(application: Application,
         _addEditProductState.value = _addEditProductState.value.copy(warning = warning)
     }
 
+    /**
+     * Adds an information result to the list of information result states.
+     *
+     * @param informationResult The information result to add.
+     */
+    fun addInformationResultState(informationResult: InformationResultState) {
+        _informationResultStateList.value += informationResult
+    }
+
+    /**
+     * Adds a new product to the store.
+     *
+     * @param product The product to add.
+     * @param onSuccess A callback invoked upon successful addition.
+     * @param onFailure A callback invoked when the addition fails.
+     */
+    fun addProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                addEditedProductUseCase(getUrlFor(endpoint = "cronos-products"),
+                                        PostProductRequest(key = cronosKey, product = product.toProductDto()),
+                                        apiKey).collect { result ->
+                    result.onSuccess {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    }.onFailure {
+                        withContext(Dispatchers.Main) {
+                            onFailure()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onFailure()
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates an existing product in the store.
+     *
+     * @param product The product to update.
+     * @param onSuccess A callback invoked upon successful update.
+     * @param onFailure A callback invoked when the update fails.
+     */
+    fun updateProduct(product: Product, apiKey: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                updateProductUseCase(getUrlFor(endpoint = "cronos-products"),
+                                     PutProductRequest(key = cronosKey, product = product.toProductDto()),
+                                     apiKey).collect { result ->
+                    result.onSuccess {
+                        withContext(Dispatchers.Main) {
+                            Log.d(TAG, "updateProduct: Product updated")
+                            onSuccess()
+                        }
+                    }.onFailure {
+                        withContext(Dispatchers.Main) {
+                            onFailure()
+                        }
+                    }
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onFailure()
+                }
+            }
+        }
+    }
 }
