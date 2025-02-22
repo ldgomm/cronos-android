@@ -47,8 +47,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.premierdarkcoffee.sales.cronos.R
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Group
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.ProductsState
-import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.ProductCardView
-import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.component.HorizontalChips
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.components.HorizontalChips
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,8 +107,7 @@ fun ProductsView(productsState: ProductsState,
         .navigationBarsPadding()
         .nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
         TopAppBar(title = {
-            Text(text = "${stringResource(id = R.string.products_label)}${filteredProducts.size}",
-                 style = MaterialTheme.typography.titleLarge)
+            Text(text = "${stringResource(id = R.string.products_label)}${filteredProducts.size}", style = titleStyle)
         }, actions = {
             IconButton(onClick = onAddNewProductButtonClicked) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
