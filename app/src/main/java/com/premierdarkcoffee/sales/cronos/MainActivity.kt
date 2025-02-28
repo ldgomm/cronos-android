@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,13 +23,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private lateinit var networkMonitor: NetworkMonitor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val apiKey = BuildConfig.API_KEY
         storeApiKey(this, apiKey)
 
-        enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
+        networkMonitor = NetworkMonitor(this)
+
         setContent {
             val context = LocalContext.current
             var bearer: String? by remember { mutableStateOf("") }
@@ -39,8 +44,16 @@ class MainActivity : ComponentActivity() {
             }
             val navController = rememberNavController()
             val startDestination = if (bearer != null && bearer?.isNotEmpty() == true) ProductsRoute else AuthenticationRoute
+            val isConnected by networkMonitor.observeAsState(true)
+
             CronosTheme {
-                NavigationGraph(navController, startDestination)
+                when {
+                    !isConnected -> NoInternetView()
+                    isConnected -> NavigationGraph(navController, startDestination)
+                    else -> {
+                        UnstableConnectionView()
+                    }
+                }
             }
         }
     }
