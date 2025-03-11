@@ -7,13 +7,13 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,11 +26,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -40,6 +40,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -69,28 +70,20 @@ import com.premierdarkcoffee.sales.cronos.R
 import com.premierdarkcoffee.sales.cronos.R.string.add_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.category_label
 import com.premierdarkcoffee.sales.cronos.R.string.create_product_label
-import com.premierdarkcoffee.sales.cronos.R.string.credit_card_options_label
 import com.premierdarkcoffee.sales.cronos.R.string.description_label
-import com.premierdarkcoffee.sales.cronos.R.string.enter_discount_label
-import com.premierdarkcoffee.sales.cronos.R.string.enter_free_months_label
-import com.premierdarkcoffee.sales.cronos.R.string.enter_price_label
-import com.premierdarkcoffee.sales.cronos.R.string.enter_without_interest_label
 import com.premierdarkcoffee.sales.cronos.R.string.group_label
 import com.premierdarkcoffee.sales.cronos.R.string.label_label
 import com.premierdarkcoffee.sales.cronos.R.string.legal_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.model_label
 import com.premierdarkcoffee.sales.cronos.R.string.name_label
-import com.premierdarkcoffee.sales.cronos.R.string.offer_active_label
 import com.premierdarkcoffee.sales.cronos.R.string.origin_label
 import com.premierdarkcoffee.sales.cronos.R.string.owner_label
-import com.premierdarkcoffee.sales.cronos.R.string.stock_label
 import com.premierdarkcoffee.sales.cronos.R.string.subcategory_label
 import com.premierdarkcoffee.sales.cronos.R.string.update_product_label
 import com.premierdarkcoffee.sales.cronos.R.string.warning_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.warranty_information_label
 import com.premierdarkcoffee.sales.cronos.R.string.year_label
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Category
-import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.CreditCard
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Image
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Offer
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.model.product.Price
@@ -101,7 +94,10 @@ import com.premierdarkcoffee.sales.cronos.feature.product.domain.serviceable.Sub
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.AddEditProductState
 import com.premierdarkcoffee.sales.cronos.feature.product.domain.state.InformationResultState
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.InformationListView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.common.SectionView
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.components.IntTextFieldCardWithStepper
 import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.components.KeywordBubble
+import com.premierdarkcoffee.sales.cronos.feature.product.presentation.product.view.product.edit.components.SmartDoubleTextFieldCard
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.eleven
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.four
 import com.premierdarkcoffee.sales.cronos.util.constant.Constant.six
@@ -337,129 +333,47 @@ fun AddEditProductView(addEditProductState: AddEditProductState,
                 }
             }
 
-            // Price
-            ElevatedCard(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = six)
-                .padding(horizontal = eleven),
-                         shape = MaterialTheme.shapes.medium,
-                         elevation = CardDefaults.elevatedCardElevation(four)) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    // Amount TextField
-                    TextField(value = amountText,
-                              onValueChange = { newValue ->
-                                  amountText = newValue
-                                  val parsedAmount = newValue.toDoubleOrNull()
-                                  if (parsedAmount != null) {
-                                      amount = parsedAmount
-                                      val value = Price(amount = amount,
-                                                        offer = Offer(isOfferActive, discount),
-                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-//                                      Log.d(TAG, "AddEditProductView: Inside price $value")
-                                      setPrice(value)
-                                  }
-                              },
-                              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                              modifier = Modifier.fillMaxWidth(),
-                              placeholder = { Text(text = stringResource(id = enter_price_label)) },
-                              label = { Text("Price") })
+            SmartDoubleTextFieldCard(label = stringResource(R.string.price_label),
+                                     value = addEditProductState.price.amount, // This is your Double
+                                     onValueChange = { newAmount ->
+                                         setPrice(addEditProductState.price.copy(amount = newAmount))
+                                     },
+                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal))
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Offer Section
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = isOfferActive, onCheckedChange = { checked ->
-                            isOfferActive = checked
-                            val value = Price(amount = amount,
-                                              offer = Offer(isOfferActive, discount),
-                                              creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                            setPrice(value)
+            // Offer Section
+            SectionView(title = stringResource(id = R.string.offer_active_label)) {
+                Column {
+                    Row(horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)) {
+                        Text(text = stringResource(id = R.string.offer_active_label), style = MaterialTheme.typography.bodyLarge)
+                        Switch(checked = addEditProductState.price.offer.isActive, onCheckedChange = {
+                            setPrice(addEditProductState.price.copy(offer = Offer(it, addEditProductState.price.offer.discount)))
                         })
-                        Text(text = stringResource(id = offer_active_label))
                     }
 
-                    if (isOfferActive) {
-                        TextField(value = discount.toString(),
-                                  onValueChange = { newValue ->
-                                      val parsedDiscount = newValue.toIntOrNull()
-                                      if (parsedDiscount != null) {
-                                          discount = parsedDiscount
-                                          val value = Price(amount = amount,
-                                                            offer = Offer(isOfferActive, discount),
-                                                            creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                                          setPrice(value)
-                                      }
-                                  },
-                                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                  modifier = Modifier.fillMaxWidth(),
-                                  placeholder = { Text(text = stringResource(id = enter_discount_label)) })
+                    AnimatedVisibility(addEditProductState.price.offer.isActive) {
+                        IntTextFieldCardWithStepper(label = stringResource(R.string.enter_discount_label),
+                                                    value = addEditProductState.price.offer.discount,
+                                                    onValueChange = { newDiscount ->
+                                                        setPrice(addEditProductState.price.copy(offer = Offer(true, newDiscount)))
+                                                    },
+                                                    valueRange = 0..50)
                     }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Credit Card Options
-                    Text(text = stringResource(id = credit_card_options_label), style = MaterialTheme.typography.labelSmall)
-
-                    TextField(value = withoutInterest.toString(),
-                              onValueChange = { newValue ->
-                                  val parsedValue = newValue.toIntOrNull()
-                                  if (parsedValue != null) {
-                                      withoutInterest = parsedValue
-                                      val value = Price(amount = amount,
-                                                        offer = Offer(isOfferActive, discount),
-                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                                      setPrice(value)
-                                  }
-                              },
-                              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                              modifier = Modifier.fillMaxWidth(),
-                              placeholder = { Text(text = stringResource(id = enter_without_interest_label)) },
-                              label = { Text("Without interest") })
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    TextField(value = withInterest.toString(),
-                              onValueChange = { newValue ->
-                                  val parsedValue = newValue.toIntOrNull()
-                                  if (parsedValue != null) {
-                                      withInterest = parsedValue
-                                      val value = Price(amount = amount,
-                                                        offer = Offer(isOfferActive, discount),
-                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                                      setPrice(value)
-                                  }
-                              },
-                              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                              modifier = Modifier.fillMaxWidth(),
-                              placeholder = { Text(text = stringResource(id = R.string.enter_with_interest_label)) },
-                              label = { Text("With interest") })
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    TextField(value = freeMonths.toString(),
-                              onValueChange = { newValue ->
-                                  val parsedValue = newValue.toIntOrNull()
-                                  if (parsedValue != null) {
-                                      freeMonths = parsedValue
-                                      val value = Price(amount = amount,
-                                                        offer = Offer(isOfferActive, discount),
-                                                        creditCard = CreditCard(withoutInterest, withInterest, freeMonths))
-                                      setPrice(value)
-                                  }
-                              },
-                              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                              modifier = Modifier.fillMaxWidth(),
-                              placeholder = { Text(text = stringResource(id = enter_free_months_label)) },
-                              label = { Text("Free months") })
                 }
             }
 
+            Divider(modifier = Modifier.padding(vertical = 12.dp))
 
-            // Stock
-            TextFieldCard(stringResource(id = stock_label),
-                          addEditProductState.stock.toString(),
-                          { stock -> setStock(stock.toIntOrNull() ?: 0) },
-                          KeyboardOptions(keyboardType = KeyboardType.Number))
+            // Stock Section
+            IntTextFieldCardWithStepper(label = stringResource(R.string.stock_label),
+                                        value = addEditProductState.stock,
+                                        onValueChange = { setStock(it) },
+                                        valueRange = 0..100)
+
+
 
             ElevatedCard(elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier
                 .fillMaxWidth()
