@@ -47,13 +47,14 @@ class MainActivity : ComponentActivity() {
             val isConnected by networkMonitor.observeAsState(true)
 
             CronosTheme {
-                when {
-                    !isConnected -> NoInternetView()
-                    isConnected -> NavigationGraph(navController, startDestination)
-                    else -> {
-                        UnstableConnectionView()
-                    }
-                }
+                NavigationGraph(navController, startDestination)
+//                when {
+//                    !isConnected -> NoInternetView()
+//                    isConnected -> NavigationGraph(navController, startDestination)
+//                    else -> {
+//                        UnstableConnectionView()
+//                    }
+//                }
             }
         }
     }
