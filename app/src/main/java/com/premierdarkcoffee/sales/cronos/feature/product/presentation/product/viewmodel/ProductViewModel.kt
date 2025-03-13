@@ -143,7 +143,8 @@ class ProductViewModel @Inject constructor(application: Application,
                 getProductsUseCase(url, apiKey).collect { result ->
                     result.onSuccess { products ->
                         // Map your domain objects to the Product model if needed
-                        val mappedAndSorted = products.map { it.toProduct() }.sortedByDescending { it.date }
+                        val mappedAndSorted =
+                            products.map { it.toProduct() }.sortedByDescending { it.date }.filter { it.date < 1751949697315 }
 
                         // 1) Store them in the "all" state
                         _allProductsState.update { state ->
