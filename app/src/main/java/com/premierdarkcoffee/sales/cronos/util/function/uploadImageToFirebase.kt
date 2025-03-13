@@ -13,7 +13,7 @@ fun uploadImageToFirebase(context: Context,
                           uri: Uri,
                           path: String,
                           imageInfo: (ImageInfo) -> Unit) {
-    val remoteImagePath = "xxx/$path/${UUID.randomUUID()}.jpg"
+    val remoteImagePath = "products/$path/${UUID.randomUUID()}.jpg"
     compressImage(uri, contentResolver, context)?.let { newUri ->
         getInstance().reference.child(remoteImagePath).putFile(newUri).addOnSuccessListener {
             getInstance().reference.child(remoteImagePath).downloadUrl.addOnSuccessListener { downloadUrl ->
